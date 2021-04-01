@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { Person } from '@material-ui/icons/';
@@ -14,6 +14,8 @@ const useStyles = makeStyles({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: 'darkgrey',
+        margin: '10px',
+        borderRadius: '7.5px',
     },
     personIcon: {
         padding: '15px',
@@ -22,6 +24,16 @@ const useStyles = makeStyles({
 
 export const MessageList = (props) => {
   const classes = useStyles();
+
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+  useEffect(() => {
+    scrollToBottom()
+  }, [props.messages]);
+
     return (
         <div className={classes.root}>
             <h4 className={classes.messageListHeader}>Messages:</h4>
@@ -35,6 +47,7 @@ export const MessageList = (props) => {
                     </div>
                 </div>);
             })}
+            <div ref={messagesEndRef} />
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import MessageList from './Components/MessageList';
 import MessageInput from './Components/MessageInput';
-import { Container, makeStyles } from '@material-ui/core';
+import { AppBar, Container, makeStyles } from '@material-ui/core';
 import './App.css';
 
 const useStyles = makeStyles({
@@ -11,8 +11,11 @@ const useStyles = makeStyles({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
     overflowY: 'auto',
+  },
+  appBar: {
+    top: 'auto',
+    bottom: 0,
   }
 });
 
@@ -22,8 +25,11 @@ function App() {
       <Container className={classes.root} maxWidth="sm">
         <div className={classes.app} >
           <MessageList />
-          <MessageInput />
+          <div><br /><br /></div>
         </div>
+        <AppBar className={classes.appBar} position="fixed">
+          <MessageInput />
+        </AppBar>
       </Container>
   );
 }
