@@ -1,8 +1,6 @@
-html, body, .root, .app {
+html, body, #root {
     height: 100%;
-}
-.app {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
 }

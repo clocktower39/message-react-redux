@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 import { Person } from '@material-ui/icons/';
 
 const useStyles = makeStyles({

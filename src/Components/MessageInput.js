@@ -7,14 +7,14 @@ import { PublishRounded } from '@material-ui/icons/';
 
 export const MessageInput = (props) => {
 
-    const [user, setUser] = useState('default');
-    const [message, setMessage] = useState('default message...');
+    const [user, setUser] = useState('');
+    const [message, setMessage] = useState('');
     const dispatch = useDispatch();
 
     return (
         <div>
-            <TextField label="User" value={user} onChange={()=>setUser('changed')} />
-            <TextField label="Message" value={message} onChange={()=>setMessage('updated message...')} />
+            <TextField label="User" value={user} onChange={(e)=>setUser(e.target.value)} />
+            <TextField label="Message" value={message} onChange={(e)=>setMessage(e.target.value)} />
             <Button
                 onClick={(e)=>{
                     dispatch(addMessage(user,message));
