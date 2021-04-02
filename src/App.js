@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     height: '100%',
   },
   app: {
-    height: '100%',
+    height: 'calc(100% - 48px)',
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'auto',
@@ -25,7 +25,6 @@ function App() {
       <Container className={classes.root} maxWidth="sm">
         <div className={classes.app} >
           <MessageList />
-          <div><br /><br /></div>
         </div>
         <AppBar className={classes.appBar} position="fixed">
           <MessageInput />
