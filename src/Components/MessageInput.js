@@ -9,9 +9,13 @@ const useStyles = makeStyles({
     root: {
         textAlign: 'center',
     },
+    textField: {
+        margin: '12px',
+    },
     button: {
         height: '100%',
-    }
+    },
+
   });
 
 export const MessageInput = (props) => {
@@ -22,15 +26,25 @@ export const MessageInput = (props) => {
 
     const classes = useStyles();
 
+    const handleKeyDown = (e) => {
+        if(e.key === 'Enter'){
+            handleMessageSubmit();
+        }
+    }
+
+    const handleMessageSubmit = (e) => {
+        if(user !== '' && message !== ''){
+            dispatch(addMessage(user,message));
+        }
+    }
+
     return (
         <div className={classes.root}>
-            <TextField label="User" value={user} onChange={(e)=>setUser(e.target.value)} />
-            <TextField label="Message" value={message} onChange={(e)=>setMessage(e.target.value)} />
+            <TextField className={classes.textField} label="User" value={user} onKeyDown={(e)=>handleKeyDown(e)} onChange={(e)=>setUser(e.target.value)} />
+            <TextField className={classes.textField} label="Message" value={message} onKeyDown={(e)=>handleKeyDown(e)} onChange={(e)=>setMessage(e.target.value)} />
             <Button
                 className={classes.button}
-                onClick={(e)=>{
-                    dispatch(addMessage(user,message));
-                }}
+                onClick={(e)=>handleMessageSubmit(e)}
             ><PublishRounded /></Button>
         </div>
     )

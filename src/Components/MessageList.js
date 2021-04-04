@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { Person } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
@@ -39,11 +39,11 @@ export const MessageList = (props) => {
             <h4 className={classes.messageListHeader}>Messages:</h4>
             {props.messages.map((message)=>{
                 return (
-                <div className={classes.messageContainer}>
+                <div key={`${message.user}-${message.message}`} className={classes.messageContainer}>
                     <Person className={classes.personIcon} />
                     <div>
-                        <p>{message.user}</p>
-                        <p>{message.message}</p>
+                        <Typography>{message.user}</Typography>
+                        <Typography variant='caption'>{message.message}</Typography>
                     </div>
                 </div>);
             })}
@@ -53,7 +53,7 @@ export const MessageList = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    messages: [...state.messages],//try this with scheduler
+    messages: [...state.messages],
     user: state.user
 })
 
