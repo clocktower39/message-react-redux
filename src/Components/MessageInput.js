@@ -28,7 +28,7 @@ export const MessageInput = (props) => {
 
     const handleKeyDown = (e) => {
         if(e.key === 'Enter'){
-            handleMessageSubmit();
+            handleMessageSubmit(e);
         }
     }
 
@@ -36,18 +36,39 @@ export const MessageInput = (props) => {
         if(user !== '' && message !== ''){
             dispatch(addMessage(user,message));
         }
+        else {
+            console.log(e.target);
+        }
     }
 
     return (
-        <div className={classes.root}>
-            <TextField className={classes.textField} label="User" value={user} onKeyDown={(e)=>handleKeyDown(e)} onChange={(e)=>setUser(e.target.value)} />
-            <TextField className={classes.textField} label="Message" value={message} onKeyDown={(e)=>handleKeyDown(e)} onChange={(e)=>setMessage(e.target.value)} />
-            <Button
-                className={classes.button}
-                onClick={(e)=>handleMessageSubmit(e)}
-            ><PublishRounded /></Button>
-        </div>
-    )
+      <div className={classes.root}>
+        <TextField
+          error={user === "" ? true : false}
+          helperText={user === "" ? "Please enter a user" : false}
+          className={classes.textField}
+          label="User"
+          value={user}
+          onKeyDown={(e) => handleKeyDown(e)}
+          onChange={(e) => setUser(e.target.value)}
+        />
+        <TextField
+          error={message === "" ? true : false}
+          helperText={(message === '')?"Please enter a message":false}
+          className={classes.textField}
+          label="Message"
+          value={message}
+          onKeyDown={(e) => handleKeyDown(e)}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <Button
+          className={classes.button}
+          onClick={(e) => handleMessageSubmit(e)}
+        >
+          <PublishRounded />
+        </Button>
+      </div>
+    );
 }
 
 const mapStateToProps = (state) => ({
