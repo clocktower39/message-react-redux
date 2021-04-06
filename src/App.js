@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     height: '100%',
   },
   app: {
-    height: 'calc(100% - 48px)',
+    height: 'calc(100% - 72px)',
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'auto',

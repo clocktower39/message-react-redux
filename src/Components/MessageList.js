@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles, Typography } from '@material-ui/core';
 import { Person } from '@material-ui/icons/';
-import { useDispatch } from 'react-redux'
 import { updateMessageList } from '../Redux/actions';
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles({
     root: {
@@ -34,9 +34,16 @@ export const MessageList = (props) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
   useEffect(() => {
-    scrollToBottom()
+    scrollToBottom();
   }, [props.messages]);
   
+  useEffect(() => {
+      fetch('http://10.37.39.39:3000/messages/').then(res => res.json()).then(data => dispatch(updateMessageList([...data])));
+   }, []);
+  
+//   useEffect(() => {
+//     dispatch(updateMessageList([{name: 'matt', message: 'hello there'},{name: 'christina', message: "i want to sleep"}]))
+// }, []);
 
     return (
         <div className={classes.root}>
@@ -62,7 +69,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    
+    updateMessageList
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageList)

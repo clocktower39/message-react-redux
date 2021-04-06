@@ -8,8 +8,9 @@ export function addMessage(name, message){
         message: message,
     }
 }
-export function updateMessageList(){
+export function updateMessageList(messages){
     return {
         type: UPDATE_MESSAGE_LIST,
+        messages: messages
     }
 }
