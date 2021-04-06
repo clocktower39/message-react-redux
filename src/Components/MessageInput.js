@@ -36,6 +36,15 @@ export const MessageInput = (props) => {
     const handleMessageSubmit = (e) => {
         if(name !== '' && message !== ''){
             dispatch(addMessage(name,message));
+            let newMessage = JSON.stringify({name:name, message:message});
+            
+            fetch('http://10.37.39.39:3000/messages', {
+              method: 'post',dataType: 'json',
+              body: newMessage,
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            });
         }
         else {
             console.log(e.target);

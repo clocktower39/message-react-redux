@@ -39,18 +39,16 @@ export const MessageList = (props) => {
   
   useEffect(() => {
       fetch('http://10.37.39.39:3000/messages/').then(res => res.json()).then(data => dispatch(updateMessageList([...data])));
+      // eslint-disable-next-line
    }, []);
-  
-//   useEffect(() => {
-//     dispatch(updateMessageList([{name: 'matt', message: 'hello there'},{name: 'christina', message: "i want to sleep"}]))
-// }, []);
+   
 
     return (
         <div className={classes.root}>
             <h4 className={classes.messageListHeader}>Messages:</h4>
-            {props.messages.map((message)=>{
+            {props.messages.map((message,i)=>{
                 return (
-                <div key={`${message.name}-${message.message}`} className={classes.messageContainer}>
+                <div key={`${message.name}-${message.message}-${i}`} className={classes.messageContainer}>
                     <Person className={classes.personIcon} />
                     <div>
                         <Typography>{message.name}</Typography>
