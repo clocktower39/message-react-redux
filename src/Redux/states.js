@@ -4,11 +4,11 @@ export let user = {
 
 export let messages = [
     {
-        user: 'Matt',
+        name: 'Matt',
         message: "medium sized message for this thing"
     },
     {
-        user: 'Christina',
+        name: 'Christina',
         message: "small  message"
     },
 
