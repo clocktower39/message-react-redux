@@ -20,6 +20,7 @@ const useStyles = makeStyles({
 
 export const MessageInput = (props) => {
 
+    const [error, setError] = useState(false);
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
     const dispatch = useDispatch();
@@ -44,8 +45,8 @@ export const MessageInput = (props) => {
     return (
       <div className={classes.root}>
         <TextField
-          error={name === "" ? true : false}
-          helperText={name === "" ? "Please enter a name" : false}
+          error={error === true ? true : false}
+          helperText={error === true ? "Please enter a name" : false}
           className={classes.textField}
           label="Name"
           value={name}
@@ -53,13 +54,16 @@ export const MessageInput = (props) => {
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
-          error={message === "" ? true : false}
-          helperText={(message === '')?"Please enter a message":false}
+          error={error === true ? true : false}
+          helperText={(error === true)?"Please enter a message":false}
           className={classes.textField}
           label="Message"
           value={message}
           onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+              setMessage(e.target.value);
+              (e.target.value === '')?setError(true):setError(false);
+          }}
         />
         <Button
           className={classes.button}
