@@ -1,4 +1,4 @@
-import { ADD_MESSAGE, LOGIN_USER, UPDATE_MESSAGE_LIST } from './actions';
+import { ADD_MESSAGE, LOGIN_USER, LOGOUT_USER, UPDATE_MESSAGE_LIST } from './actions';
 import { messages, user } from './states'
 
 export let reducer = (state = { messages, user }, action) => {
@@ -19,6 +19,12 @@ export let reducer = (state = { messages, user }, action) => {
                 user: {
                     ...action.user,
                     username: action.user.username
+                },
+            }
+        case LOGOUT_USER:
+            return { 
+                ...state,
+                user: {
                 },
             }
         default:

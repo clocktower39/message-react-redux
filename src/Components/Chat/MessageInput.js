@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, TextField, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
-import { addMessage } from '../../Redux/actions';
+import { addMessage, logoutUser } from '../../Redux/actions';
 import { PublishRounded } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 export const MessageInput = (props) => {
 
     const [error, setError] = useState(false);
-    const [name, setName] = useState(props.user.username);
+    const [name] = useState(props.user.username);
     const [message, setMessage] = useState('');
     const dispatch = useDispatch();
 
@@ -54,6 +54,11 @@ export const MessageInput = (props) => {
         }
     }
 
+    const handleLogout = () => {
+      localStorage.removeItem('username');
+      dispatch(logoutUser());
+    }
+
     return (
       <div className={classes.root}>
         <TextField
@@ -73,6 +78,12 @@ export const MessageInput = (props) => {
           onClick={(e) => handleMessageSubmit(e)}
         >
           <PublishRounded />
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={(e) => handleLogout()}
+        >
+          Logout
         </Button>
       </div>
     );

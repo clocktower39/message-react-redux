@@ -19,7 +19,7 @@ function App(props) {
         <Router>
           <Switch>
             <Route exact path="/">
-              {(props.user.username == null)?<Login/>:<Chat />}
+              {(!props.user.username)?<Login/>:<Chat />}
             </Route>
           </Switch>
         </Router>

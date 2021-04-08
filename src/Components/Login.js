@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import { connect } from 'react-redux';
 import { Button, TextField, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
@@ -21,7 +21,7 @@ export const Login = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(localStorage.getItem('username'));
     const [password, setPassword] = useState('');
 
     const handleKeyDown = (e) => {
@@ -29,11 +29,17 @@ export const Login = (props) => {
             handleLoginAttempt(e);
         }
     }
-
     const handleLoginAttempt = (e) => {
-        console.log("login?")
-        dispatch(loginUser({username: 'matt', password: password}))
+        dispatch(loginUser({username: username, password: password}));
+        localStorage.setItem('username', username);
     }
+
+    useEffect(()=>{
+        if(username){
+            handleLoginAttempt();
+        }
+        // eslint-disable-next-line
+    },[])
 
     return (
         <div className={classes.root}>
