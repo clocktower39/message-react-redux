@@ -38,7 +38,9 @@ export const MessageList = (props) => {
   }, [props.messages]);
   
   useEffect(() => {
-      fetch('http://mattkearns.ddns.net:3000/messages/').then(res => res.json()).then(data => dispatch(updateMessageList([...data])));
+      fetch('http://mattkearns.ddns.net:3000/messages/')
+      .then(res => res.json())
+      .then(data => dispatch(updateMessageList([...data])));
       // eslint-disable-next-line
    }, []);
    
@@ -51,8 +53,9 @@ export const MessageList = (props) => {
                 <div key={message._id} className={classes.messageContainer}>
                     <Person className={classes.personIcon} />
                     <div>
-                        <Typography>{message.name}</Typography>
-                        <Typography variant='caption'>{message.message}</Typography>
+                        <Typography variant='h5' display='inline'>{message.name} </Typography>
+                        <Typography variant='subtitle1' display='inline'>{(message.timeStamp == null)? null:new Date(message.timeStamp).toLocaleTimeString()}</Typography>
+                        <Typography variant='body1' display='block'>{message.message}</Typography>
                     </div>
                 </div>);
             })}

@@ -6,7 +6,7 @@ export let reducer = (state = { messages, user }, action) => {
         case UPDATE_MESSAGE_LIST:
             return { 
                 ...state,
-                messages: [...state.messages, ...action.messages]
+                messages: [...action.messages]
             }
         case ADD_MESSAGE:
             return { 
