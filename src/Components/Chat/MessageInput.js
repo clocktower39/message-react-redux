@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, TextField, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
-import { addMessage, updateMessageList } from '../Redux/actions';
+import { addMessage } from '../../Redux/actions';
 import { PublishRounded } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 export const MessageInput = (props) => {
 
     const [error, setError] = useState(false);
-    const [name, setName] = useState('');
+    const [name, setName] = useState(props.user.username);
     const [message, setMessage] = useState('');
     const dispatch = useDispatch();
 
@@ -58,15 +58,6 @@ export const MessageInput = (props) => {
       <div className={classes.root}>
         <TextField
           error={error === true ? true : false}
-          helperText={error === true ? "Please enter a name" : false}
-          className={classes.textField}
-          label="Name"
-          value={name}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <TextField
-          error={error === true ? true : false}
           helperText={(error === true)?"Please enter a message":false}
           className={classes.textField}
           label="Message"
@@ -88,7 +79,7 @@ export const MessageInput = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    
+  user: {...state.user},
 })
 
 const mapDispatchToProps = {

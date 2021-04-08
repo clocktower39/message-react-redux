@@ -1,36 +1,35 @@
-import MessageList from './Components/MessageList';
-import MessageInput from './Components/MessageInput';
-import { AppBar, Container, makeStyles } from '@material-ui/core';
+import Login from './Components/Login';
+import Chat from './Components/Chat/Chat';
+import { Container, makeStyles } from '@material-ui/core';
+
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 const useStyles = makeStyles({
   root: {
     height: '100%',
   },
-  app: {
-    height: 'calc(100% - 72px)',
-    display: 'flex',
-    flexDirection: 'column',
-    overflowY: 'auto',
-  },
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-  }
 });
 
-function App() {
+function App(props) {
   const classes = useStyles();
   return (
       <Container className={classes.root} maxWidth="sm">
-        <div className={classes.app} >
-          <MessageList />
-        </div>
-        <AppBar className={classes.appBar} position="fixed">
-          <MessageInput />
-        </AppBar>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              {(props.user.username == null)?<Login/>:<Chat />}
+            </Route>
+          </Switch>
+        </Router>
       </Container>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  messages: [...state.messages],
+  user: {...state.user},
+})
+
+export default connect(mapStateToProps, null)(App);

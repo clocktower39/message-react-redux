@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles, Typography } from '@material-ui/core';
 import { Person } from '@material-ui/icons/';
-import { updateMessageList } from '../Redux/actions';
+import { updateMessageList } from '../../Redux/actions';
 import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles({
@@ -65,8 +65,7 @@ export const MessageList = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    messages: [...state.messages],
-    name: state.name
+    messages: [...state.messages]
 })
 
 const mapDispatchToProps = {
