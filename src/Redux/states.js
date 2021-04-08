@@ -4,10 +4,12 @@ export let user = {
 
 export let messages = [
     {
+        _id: '60091d81c1f1123b003696969',
         name: 'Matt',
         message: "medium sized message for this thing"
     },
     {
+        _id: '60091d81c1f1123b003696968',
         name: 'Christina',
         message: "small  message"
     },

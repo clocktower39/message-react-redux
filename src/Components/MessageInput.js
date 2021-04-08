@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, TextField, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
-import { addMessage } from '../Redux/actions';
+import { addMessage, updateMessageList } from '../Redux/actions';
 import { PublishRounded } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
@@ -38,13 +38,16 @@ export const MessageInput = (props) => {
             dispatch(addMessage(name,message));
             let newMessage = JSON.stringify({name:name, message:message});
             
-            fetch('http://10.37.39.39:3000/messages', {
+            fetch('http://mattkearns.ddns.net:3000/messages', {
               method: 'post',dataType: 'json',
               body: newMessage,
               headers: {
                 "Content-type": "application/json; charset=UTF-8"
               }
             });
+            
+            setMessage('');
+
         }
         else {
             console.log(e.target);
