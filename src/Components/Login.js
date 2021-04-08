@@ -30,8 +30,10 @@ export const Login = (props) => {
         }
     }
     const handleLoginAttempt = (e) => {
-        dispatch(loginUser({username: username, password: password}));
-        localStorage.setItem('username', username);
+        if(username){
+            dispatch(loginUser({username: username, password: password}));
+            localStorage.setItem('username', username);
+        }
     }
 
     useEffect(()=>{
