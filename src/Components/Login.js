@@ -1,18 +1,18 @@
 import React, { useState, useEffect }  from 'react';
 import { connect } from 'react-redux';
-import { Button, TextField, makeStyles } from '@material-ui/core';
+import { Button, TextField, Grid, Paper, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../Redux/actions';
 
 const useStyles = makeStyles({
     root: {
+        padding: '75px 0',
         textAlign: 'center',
     },
     textField: {
         margin: '12px',
     },
     button: {
-        height: '100%',
     },
 
   });
@@ -44,35 +44,47 @@ export const Login = (props) => {
     },[])
 
     return (
-        <div className={classes.root}>
-        <TextField
-          error={error === true ? true : false}
-          helperText={error === true ? "Please enter your username" : false}
-          className={classes.textField}
-          label="Username"
-          value={username}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          error={error === true ? true : false}
-          helperText={(error === true)?"Please enter your password":false}
-          className={classes.textField}
-          label="Password"
-          value={password}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => {
-              setPassword(e.target.value);
-              (e.target.value === '')?setError(true):setError(false);
-          }}
-        />
-        <Button
-          className={classes.button}
-          onClick={(e) => handleLoginAttempt(e)}
-        >
-          Login
-        </Button>
-        </div>
+        <Grid container spacing={3} className={classes.root}>
+            <Grid item xs={12}>
+                <Paper>
+                <TextField
+                error={error === true ? true : false}
+                helperText={error === true ? "Please enter your username" : false}
+                className={classes.textField}
+                label="Username"
+                value={username}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => setUsername(e.target.value)}
+                />
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper>
+                <TextField
+                error={error === true ? true : false}
+                helperText={(error === true)?"Please enter your password":false}
+                className={classes.textField}
+                label="Password"
+                value={password}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => {
+                    setPassword(e.target.value);
+                    (e.target.value === '')?setError(true):setError(false);
+                }}
+                />
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={(e) => handleLoginAttempt(e)}
+                >
+                Login
+                </Button>
+            </Grid>
+        </Grid>
     )
 }
 

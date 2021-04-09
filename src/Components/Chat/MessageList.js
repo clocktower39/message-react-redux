@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles({
     root: {
+        padding: '75px 0',
     },
     messageListHeader: {
         textAlign: 'center',
@@ -50,7 +51,7 @@ export const MessageList = (props) => {
             <h4 className={classes.messageListHeader}>Messages:</h4>
             {props.messages.map((message,i)=>{
                 return (
-                <div key={message._id} className={classes.messageContainer}>
+                <div key={message._id} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5'}:null}>
                     <Person className={classes.personIcon} />
                     <div>
                         <Typography variant='h5' display='inline'>{message.name} </Typography>
@@ -65,7 +66,8 @@ export const MessageList = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    messages: [...state.messages]
+    messages: [...state.messages],
+    user: state.user
 })
 
 const mapDispatchToProps = {

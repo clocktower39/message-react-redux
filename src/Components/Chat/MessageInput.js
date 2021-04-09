@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, TextField, makeStyles } from '@material-ui/core';
+import { Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { addMessage, logoutUser } from '../../Redux/actions';
 import { PublishRounded } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
     root: {
+        justifyContent: 'center',
+        alignItems: 'center',
         textAlign: 'center',
     },
     textField: {
         margin: '12px',
     },
     button: {
-        height: '100%',
     },
 
   });
@@ -60,32 +61,42 @@ export const MessageInput = (props) => {
     }
 
     return (
-      <div className={classes.root}>
-        <TextField
-          error={error === true ? true : false}
-          helperText={(error === true)?"Please enter a message":false}
-          className={classes.textField}
-          label="Message"
-          value={message}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onChange={(e) => {
-              setMessage(e.target.value);
-              (e.target.value === '')?setError(true):setError(false);
-          }}
-        />
-        <Button
-          className={classes.button}
-          onClick={(e) => handleMessageSubmit(e)}
-        >
-          <PublishRounded />
-        </Button>
-        <Button
-          className={classes.button}
-          onClick={(e) => handleLogout()}
-        >
-          Logout
-        </Button>
-      </div>
+      <Grid container spacing={1} className={classes.root}>
+        <Grid item>
+          <TextField
+            error={error === true ? true : false}
+            helperText={(error === true)?"Please enter a message":false}
+            className={classes.textField}
+            label="Message"
+            value={message}
+            onKeyDown={(e) => handleKeyDown(e)}
+            onChange={(e) => {
+                setMessage(e.target.value);
+                (e.target.value === '')?setError(true):setError(false);
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            onClick={(e) => handleMessageSubmit(e)}
+          >
+            Send
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            onClick={(e) => handleLogout()}
+          >
+            Logout
+          </Button>
+        </Grid>
+      </Grid>
     );
 }
 

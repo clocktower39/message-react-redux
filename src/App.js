@@ -1,6 +1,6 @@
 import Login from './Components/Login';
 import Chat from './Components/Chat/Chat';
-import { Container, makeStyles } from '@material-ui/core';
+import { AppBar, Container, makeStyles, Typography } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -10,12 +10,19 @@ const useStyles = makeStyles({
   root: {
     height: '100%',
   },
+  AppBar: {
+    textAlign: 'center',
+    padding: '15px',
+  }
 });
 
 function App(props) {
   const classes = useStyles();
   return (
       <Container className={classes.root} maxWidth="sm">
+        <AppBar className={classes.AppBar} >
+          <Typography variant='h4'>Bonfire</Typography>
+        </AppBar>
         <Router>
           <Switch>
             <Route exact path="/">

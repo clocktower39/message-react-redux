@@ -8,7 +8,6 @@ const useStyles = makeStyles({
       height: 'calc(100% - 72px)',
       display: 'flex',
       flexDirection: 'column',
-      overflowY: 'auto',
     },
     appBar: {
       top: 'auto',
