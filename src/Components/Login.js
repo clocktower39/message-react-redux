@@ -66,6 +66,7 @@ export const Login = (props) => {
                 className={classes.textField}
                 label="Password"
                 value={password}
+                type="password"
                 onKeyDown={(e) => handleKeyDown(e)}
                 onChange={(e) => {
                     setPassword(e.target.value);
