@@ -8,6 +8,7 @@ export function addMessage(name, message){
         type: ADD_MESSAGE,
         name: name,
         message: message,
+        timeStamp: (new Date()),
     }
 }
 export function updateMessageList(messages){

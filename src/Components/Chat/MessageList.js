@@ -54,7 +54,7 @@ export const MessageList = (props) => {
                 <div key={message._id} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5'}:null}>
                     <Person className={classes.personIcon} />
                     <div>
-                        <Typography variant='h5' display='inline'>{message.name} </Typography>
+                        <Typography variant='h6' display='inline'>{message.name} </Typography>
                         <Typography variant='subtitle1' display='inline'>{(message.timeStamp == null)? null:new Date(message.timeStamp).toLocaleTimeString()}</Typography>
                         <Typography variant='body1' display='block'>{message.message}</Typography>
                     </div>

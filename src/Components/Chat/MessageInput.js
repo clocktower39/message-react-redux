@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { addMessage, logoutUser } from '../../Redux/actions';
-import { PublishRounded } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
     root: {
