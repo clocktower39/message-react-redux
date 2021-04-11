@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 
   });
 
-export const Login = (props) => {
+export const SignUp = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
@@ -76,13 +76,29 @@ export const Login = (props) => {
                 </Paper>
             </Grid>
             <Grid item xs={12}>
+                <Paper>
+                <TextField
+                error={error === true ? true : false}
+                helperText={(error === true)?"Please enter your password":false}
+                className={classes.textField}
+                label="Confirm Password"
+                value={password}
+                type="password"
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => {
+                    setPassword(e.target.value);
+                    (e.target.value === '')?setError(true):setError(false);
+                }}
+                />
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
                 <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                onClick={(e) => handleLoginAttempt(e)}
                 >
-                Login
+                Sign Up
                 </Button>
             </Grid>
         </Grid>
@@ -97,4 +113,4 @@ const mapDispatchToProps = {
     
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

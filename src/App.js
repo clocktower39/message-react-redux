@@ -1,7 +1,8 @@
 import Navbar from './Components/Navbar';
 import Login from './Components/Login';
+import SignUp from './Components/SignUp';
 import Chat from './Components/Chat/Chat';
-import { AppBar, Container, makeStyles, Typography } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -17,11 +18,14 @@ function App(props) {
   const classes = useStyles();
   return (
       <Container className={classes.root} maxWidth="sm">
-        <Navbar />
         <Router>
+        <Navbar />
           <Switch>
             <Route exact path="/">
               {(!props.user.username)?<Login/>:<Chat />}
+            </Route>
+            <Route exact path="/signup">
+              {(!props.user.username)?<SignUp />:<Chat />}
             </Route>
           </Switch>
         </Router>

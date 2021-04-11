@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { AppBar, Button, makeStyles, Typography } from '@material-ui/core';
 import { connect, useDispatch } from 'react-redux'
 import { logoutUser } from '../Redux/actions';
@@ -23,16 +24,20 @@ export const Navbar = (props) => {
       
     return (
         <AppBar className={classes.root} >
-            <Typography variant='h4' className={classes.navTitle}>Bonfire</Typography>
+            <Link to="/">
+                <Typography variant='h4' className={classes.navTitle}>Bonfire</Typography>
+            </Link>
             {(!props.user.username)?
-            <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            onClick={(e) => alert('set up sign up')}
-            >
-            Sign Up
-            </Button>:
+            <Link to="/signup">
+                <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                onClick={(e) => alert('set up sign up')}
+                >
+                Sign Up
+                </Button>
+            </Link>:
             <Button
             variant="contained"
             color="secondary"

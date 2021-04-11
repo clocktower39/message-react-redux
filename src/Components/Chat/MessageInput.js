@@ -56,7 +56,7 @@ export const MessageInput = (props) => {
 
     return (
       <Grid container spacing={1} className={classes.root}>
-        <Grid item xs={4}>
+        <Grid item xs={8} md={4}>
           <TextField
             fullWidth
             error={error === true ? true : false}
