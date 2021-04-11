@@ -1,3 +1,4 @@
+import Navbar from './Components/Navbar';
 import Login from './Components/Login';
 import Chat from './Components/Chat/Chat';
 import { AppBar, Container, makeStyles, Typography } from '@material-ui/core';
@@ -9,10 +10,6 @@ import './App.css';
 const useStyles = makeStyles({
   root: {
     height: '100%',
-  },
-  AppBar: {
-    textAlign: 'center',
-    padding: '15px',
   }
 });
 
@@ -20,9 +17,7 @@ function App(props) {
   const classes = useStyles();
   return (
       <Container className={classes.root} maxWidth="sm">
-        <AppBar className={classes.AppBar} >
-          <Typography variant='h4'>Bonfire</Typography>
-        </AppBar>
+        <Navbar />
         <Router>
           <Switch>
             <Route exact path="/">

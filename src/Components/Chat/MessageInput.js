@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
-import { addMessage, logoutUser } from '../../Redux/actions';
+import { addMessage } from '../../Redux/actions';
 
 const useStyles = makeStyles({
     root: {
@@ -54,15 +54,11 @@ export const MessageInput = (props) => {
         }
     }
 
-    const handleLogout = () => {
-      localStorage.removeItem('username');
-      dispatch(logoutUser());
-    }
-
     return (
       <Grid container spacing={1} className={classes.root}>
-        <Grid item>
+        <Grid item xs={4}>
           <TextField
+            fullWidth
             error={error === true ? true : false}
             helperText={(error === true)?"Please enter a message":false}
             className={classes.textField}
@@ -75,7 +71,7 @@ export const MessageInput = (props) => {
             }}
           />
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
           <Button
             variant="contained"
             color="secondary"
@@ -83,16 +79,6 @@ export const MessageInput = (props) => {
             onClick={(e) => handleMessageSubmit(e)}
           >
             Send
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            onClick={(e) => handleLogout()}
-          >
-            Logout
           </Button>
         </Grid>
       </Grid>
