@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Button, makeStyles, Typography } from '@material-ui/core';
 import { connect, useDispatch } from 'react-redux'
 import { logoutUser } from '../Redux/actions';
@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 export const Navbar = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const location = useLocation();
     
     const handleLogout = () => {
         localStorage.removeItem('username');
@@ -27,17 +28,33 @@ export const Navbar = (props) => {
             <Link to="/">
                 <Typography variant='h4' className={classes.navTitle}>Bonfire</Typography>
             </Link>
+
             {(!props.user.username)?
+
+            (location.pathname === '/signup')?
+
+            <Link to="/">
+                <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                >
+                Login
+                </Button>
+            </Link>
+            :
+        
             <Link to="/signup">
                 <Button
                 variant="contained"
                 color="secondary"
                 className={classes.button}
-                onClick={(e) => alert('set up sign up')}
                 >
                 Sign Up
                 </Button>
-            </Link>:
+            </Link>
+        
+            :
             <Button
             variant="contained"
             color="secondary"
