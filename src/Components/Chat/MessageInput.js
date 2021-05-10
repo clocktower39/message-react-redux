@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { addMessage } from '../../Redux/actions';
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://10.37.39.39:3000/messages";
 
 const useStyles = makeStyles({
     root: {
@@ -38,7 +40,7 @@ export const MessageInput = (props) => {
             dispatch(addMessage(name,message));
             let newMessage = JSON.stringify({name:name, message:message});
             
-            fetch('http://mattkearns.ddns.net:3000/messages', {
+            fetch('http://mattkearns.ddns.net:3000', {
               method: 'post',dataType: 'json',
               body: newMessage,
               headers: {
@@ -53,6 +55,14 @@ export const MessageInput = (props) => {
             console.log(e.target);
         }
     }
+
+    useEffect(() => {
+      const socket = socketIOClient(ENDPOINT);
+      socket.on("message", data => {
+        console.log(data);
+        dispatch(addMessage(data.name,data.message));
+      });// eslint-disable-next-line
+    }, []);
 
     return (
       <Grid container spacing={1} className={classes.root}>
