@@ -39,7 +39,7 @@ export const MessageList = (props) => {
   }, [props.messages]);
   
   useEffect(() => {
-      fetch('http://mattkearns.ddns.net:3000/messages/')
+      fetch('http://192.168.0.119:3000/messages/')
       .then(res => res.json())
       .then(data => dispatch(updateMessageList([...data])));
       // eslint-disable-next-line
@@ -51,7 +51,7 @@ export const MessageList = (props) => {
             <h4 className={classes.messageListHeader}>Messages:</h4>
             {props.messages.map((message,i)=>{
                 return (
-                <div key={message._id} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5'}:null}>
+                <div key={message._id || i} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5'}:null}>
                     <Person className={classes.personIcon} />
                     <div>
                         <Typography variant='h6' display='inline'>{message.name} </Typography>
