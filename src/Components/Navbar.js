@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Button, makeStyles, Typography } from '@material-ui/core';
 import { connect, useDispatch } from 'react-redux'
 import { logoutUser } from '../Redux/actions';
+import Logo from '../img/BonfireLogo.png';
 
 const useStyles = makeStyles({
     root: {
@@ -11,6 +12,10 @@ const useStyles = makeStyles({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    Link: {
+        color: 'white',
+        textDecoration: 'none',
+    }
   });
 
 export const Navbar = (props) => {
@@ -25,8 +30,11 @@ export const Navbar = (props) => {
       
     return (
         <AppBar className={classes.root} >
-            <Link to="/">
-                <Typography variant='h4' className={classes.navTitle}>Bonfire</Typography>
+            <Link to="/" className={classes.Link} >
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center',}}>
+                    <Typography variant='h4' className={classes.navTitle}>Bonfire</Typography>
+                    <img src={Logo} alt="Bonfire logo" style={{height: '25px', width: '25px',}}/>
+                </div>
             </Link>
 
             {(!props.user.username)?
