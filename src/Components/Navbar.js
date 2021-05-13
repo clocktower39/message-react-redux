@@ -11,6 +11,7 @@ const useStyles = makeStyles({
         padding: '15px',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        backgroundColor: '#23272a',
     },
     Link: {
         color: 'white',

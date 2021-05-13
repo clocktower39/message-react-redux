@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles({
     root: {
-        padding: '75px 0',
+        padding: '75px 0 95px 0',
     },
     messageListHeader: {
         textAlign: 'center',

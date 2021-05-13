@@ -11,6 +11,7 @@ import './App.css';
 const useStyles = makeStyles({
   root: {
     height: '100%',
+    backgroundColor: '#2C2F33',
   }
 });
 

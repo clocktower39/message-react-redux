@@ -11,9 +11,10 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
+        backgroundColor: '#23272a',
     },
     textField: {
-        margin: '12px',
+      margin: '12px',
     },
     button: {
     },
@@ -66,7 +67,7 @@ export const MessageInput = (props) => {
     }, []);
 
     return (
-      <Grid container spacing={1} className={classes.root}>
+      <Grid container className={classes.root}>
         <Grid item xs={8} md={4}>
           <TextField
             fullWidth
@@ -85,7 +86,7 @@ export const MessageInput = (props) => {
         <Grid item xs={1}>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.button}
             onClick={(e) => handleMessageSubmit(e)}
           >
