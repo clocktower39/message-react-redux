@@ -6,7 +6,7 @@ import { loginUser } from '../Redux/actions';
 
 const useStyles = makeStyles({
     root: {
-        padding: '75px 0',
+        padding: '125px 0',
         textAlign: 'center',
     },
     textField: {
@@ -31,7 +31,7 @@ export const Login = (props) => {
     }
     const handleLoginAttempt = (e) => {
         if(username  && password){
-            dispatch(loginUser({username: username, password: password}));
+            dispatch(loginUser(JSON.stringify({username: username, password: password})));
             localStorage.setItem('username', username);
         }
     }

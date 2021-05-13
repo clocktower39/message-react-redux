@@ -39,7 +39,11 @@ export const MessageList = (props) => {
   }, [props.messages]);
   
   useEffect(() => {
-      fetch('http://192.168.0.119:3000/messages/')
+      fetch('http://192.168.0.119:3000/messages/',{
+          headers: new Headers({
+              'Authorization': 'Bearer ' + localStorage.getItem('JWT_AUTH_TOKEN')
+          })
+      })
       .then(res => res.json())
       .then(data => dispatch(updateMessageList([...data])));
       // eslint-disable-next-line
