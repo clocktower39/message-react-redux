@@ -18,7 +18,6 @@ export let reducer = (state = { messages, user }, action) => {
                 ...state,
                 user: {
                     ...action.user,
-                    username: action.user.username
                 },
             }
         case LOGOUT_USER:

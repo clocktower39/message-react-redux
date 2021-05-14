@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Button, TextField, Grid, Paper, makeStyles } from '@material-ui/core';
-import { useDispatch } from 'react-redux'
 import { loginUser } from '../Redux/actions';
 
 const useStyles = makeStyles({
@@ -23,6 +23,7 @@ export const Login = (props) => {
     const [error, setError] = useState(false);
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [password, setPassword] = useState('');
+    const user = useSelector(state => state.user);
 
     const handleKeyDown = (e) => {
         if(e.key === 'Enter'){
@@ -36,13 +37,9 @@ export const Login = (props) => {
         }
     }
 
-    useEffect(()=>{
-        if(username){
-            handleLoginAttempt();
-        }
-        // eslint-disable-next-line
-    },[])
-
+    if(user.username){
+        return (<Redirect to={{ pathname: '/'}} />)
+    }
     return (
         <Grid container spacing={3} className={classes.root}>
             <Grid item xs={12}>

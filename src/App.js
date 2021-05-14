@@ -2,6 +2,7 @@ import Navbar from './Components/Navbar';
 import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import Chat from './Components/Chat/Chat';
+import AuthRoute from './Components/AuthRoute';
 import { Container, makeStyles } from '@material-ui/core';
 
 import { connect } from 'react-redux';
@@ -22,12 +23,9 @@ function App(props) {
         <Router>
         <Navbar />
           <Switch>
-            <Route exact path="/">
-              {(!props.user.username)?<Login/>:<Chat />}
-            </Route>
-            <Route exact path="/signup">
-              {(!props.user.username)?<SignUp />:<Chat />}
-            </Route>
+            <AuthRoute exact path="/" component={Chat}/>
+            <Route exact path="/login"><Login /></Route>
+            <Route exact path="/signup"><SignUp /></Route>
           </Switch>
         </Router>
       </Container>

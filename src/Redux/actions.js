@@ -49,6 +49,17 @@ export function loginUser(user){
     }
 }
 
+export const loginJWT = (token) => {
+    return async (dispatch, getState) => {
+        const decodedAccessToken = jwt(token);
+        return dispatch({
+            type: LOGIN_USER,
+            user: decodedAccessToken,
+        });
+    }
+}
+
+
 export function logoutUser(){
     return {
         type: LOGOUT_USER
