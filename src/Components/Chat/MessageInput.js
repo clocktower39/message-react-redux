@@ -15,6 +15,13 @@ const useStyles = makeStyles({
     },
     textField: {
       margin: '12px',
+      borderBottomColor: '#ccc',
+      "& input": {
+        color: "#ccc",
+      },
+      "& label": {
+        color: "#ccc",
+      },
     },
     button: {
     },
@@ -76,6 +83,9 @@ export const MessageInput = (props) => {
             className={classes.textField}
             label="Message"
             value={message}
+            InputProps={{
+              className: classes.input
+            }}
             onKeyDown={(e) => handleKeyDown(e)}
             onChange={(e) => {
                 setMessage(e.target.value);
