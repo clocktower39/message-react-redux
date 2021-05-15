@@ -9,7 +9,7 @@ export const AuthRoute = (props) => {
     const dispatch = useDispatch();
     const Component = props.component;
     const user = useSelector(state => state.user);
-    const [loading, setLoading] = useState(user.username?false:true);
+    const [loading, setLoading] = useState(true);
 
 
     const handleLoginAttempt = async (e) => {
@@ -17,7 +17,7 @@ export const AuthRoute = (props) => {
     }
 
     useEffect(()=>{
-        if(localStorage.getItem('JWT_AUTH_TOKEN'!==null)){
+        if(localStorage.getItem('JWT_AUTH_TOKEN')!==null){
             handleLoginAttempt();
         }
         else{

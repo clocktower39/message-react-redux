@@ -61,7 +61,10 @@ export const loginJWT = (token) => {
 
 
 export function logoutUser(){
-    return {
-        type: LOGOUT_USER
+    return async (dispatch, getState) => {
+        localStorage.removeItem('JWT_AUTH_TOKEN');
+        return dispatch({
+            type: LOGOUT_USER
+        })
     }
 }
