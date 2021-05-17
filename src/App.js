@@ -20,7 +20,7 @@ function App(props) {
   const classes = useStyles();
   return (
       <Container className={classes.root} maxWidth="sm">
-        <Router>
+        <Router basename="/message/">
         <Navbar />
           <Switch>
             <AuthRoute exact path="/" component={Chat}/>

@@ -23,7 +23,7 @@ export function updateMessageList(messages){
 
 export function loginUser(user){
     return async (dispatch, getState) => {
-        const response = await fetch('http://192.168.0.119:3000/login', {
+        const response = await fetch('https://immense-harbor-48108.herokuapp.com/login', {
             method: 'post',
             dataType: 'json',
             body: user,
@@ -32,15 +32,15 @@ export function loginUser(user){
             }
           })
         const data = await response.json();
-        const accessToken = data.accessToken;
-        const decodedAccessToken = jwt(accessToken);
-        
         if(data.error){
             return dispatch({
                 type: ERROR,
                 error: data.error
             });
         }
+        const accessToken = data.accessToken;
+        const decodedAccessToken = jwt(accessToken);
+        
         localStorage.setItem('JWT_AUTH_TOKEN', accessToken);
         return dispatch({
             type: LOGIN_USER,

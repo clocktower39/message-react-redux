@@ -4,7 +4,7 @@ import { Button, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { addMessage } from '../../Redux/actions';
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://192.168.0.119:3000";
+const ENDPOINT = "https://immense-harbor-48108.herokuapp.com";
 
 const useStyles = makeStyles({
     root: {
@@ -48,7 +48,7 @@ export const MessageInput = (props) => {
             dispatch(addMessage(name,message));
             let newMessage = JSON.stringify({name:name, message:message});
             
-            fetch('http://192.168.0.119:3000/messages', {
+            fetch('https://immense-harbor-48108.herokuapp.com/messages', {
               method: 'post',dataType: 'json',
               body: newMessage,
               headers: {
