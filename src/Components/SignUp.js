@@ -1,8 +1,8 @@
-import React, { useState, useEffect }  from 'react';
-import { connect } from 'react-redux';
+import React, { useState }  from 'react';
 import { Button, TextField, Grid, Paper, makeStyles } from '@material-ui/core';
-import { useDispatch } from 'react-redux'
-import { loginUser } from '../Redux/actions';
+import { useDispatch, useSelector, connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { signupUser } from '../Redux/actions';
 
 const useStyles = makeStyles({
     root: {
@@ -27,25 +27,24 @@ export const SignUp = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const user = useSelector(state => state.user);
 
     const handleKeyDown = (e) => {
         if(e.key === 'Enter'){
-            handleLoginAttempt(e);
+            if(username && firstName && lastName && email && password && confirmPassword){
+                handleSignupAttempt();
+            }
         }
     }
-    const handleLoginAttempt = (e) => {
+    const handleSignupAttempt = (e) => {
         if(username  && password){
-            dispatch(loginUser({username: username, password: password}));
+            dispatch(signupUser(JSON.stringify({username, firstName, lastName, email, password})));
             localStorage.setItem('username', username);
         }
     }
-
-    useEffect(()=>{
-        if(username){
-            handleLoginAttempt();
-        }
-        // eslint-disable-next-line
-    },[])
+    if(user.username){
+        return (<Redirect to={{ pathname: '/'}} />)
+    }
 
     return (
         <Grid container spacing={3} className={classes.root}>

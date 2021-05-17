@@ -3,6 +3,7 @@ import jwt from 'jwt-decode';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
+export const SIGNUP_USER = 'SIGNUP_USER';
 export const UPDATE_MESSAGE_LIST = 'UPDATE_MESSAGE_LIST';
 export const ERROR = 'ERROR';
 
@@ -18,6 +19,28 @@ export function updateMessageList(messages){
     return {
         type: UPDATE_MESSAGE_LIST,
         messages: messages
+    }
+}
+
+export function signupUser(user){
+    return async (dispatch, getState) => {
+        const response = await fetch('https://immense-harbor-48108.herokuapp.com/signup', {
+            method: 'post',
+            dataType: 'json',
+            body: user,
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          })
+        const data = await response.json();
+        if(data.error){
+            return dispatch({
+                type: ERROR,
+                error: data.error
+            });
+        }
+
+        return dispatch(loginUser(user));
     }
 }
 
