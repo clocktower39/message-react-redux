@@ -6,7 +6,7 @@ import { loginUser } from '../Redux/actions';
 
 const useStyles = makeStyles({
     root: {
-        padding: '75px 0',
+        padding: '125px 0 25px 0',
         textAlign: 'center',
     },
     textField: {
@@ -21,8 +21,12 @@ export const SignUp = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const [username, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleKeyDown = (e) => {
         if(e.key === 'Enter'){
@@ -58,6 +62,48 @@ export const SignUp = (props) => {
                 />
                 </Paper>
             </Grid>
+
+            <Grid item xs={12}>
+                <Paper>
+                <TextField
+                error={error === true ? true : false}
+                helperText={error === true ? "Please enter your first name" : false}
+                className={classes.textField}
+                label="First Name"
+                value={firstName}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => setFirstName(e.target.value)}
+                />
+                </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Paper>
+                <TextField
+                error={error === true ? true : false}
+                helperText={error === true ? "Please enter your last name" : false}
+                className={classes.textField}
+                label="Last Name"
+                value={lastName}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => setLastName(e.target.value)}
+                />
+                </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Paper>
+                <TextField
+                error={error === true ? true : false}
+                helperText={error === true ? "Please enter your email" : false}
+                className={classes.textField}
+                label="Email"
+                value={email}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onChange={(e) => setEmail(e.target.value)}
+                />
+                </Paper>
+            </Grid>
             <Grid item xs={12}>
                 <Paper>
                 <TextField
@@ -82,11 +128,11 @@ export const SignUp = (props) => {
                 helperText={(error === true)?"Please enter your password":false}
                 className={classes.textField}
                 label="Confirm Password"
-                value={password}
+                value={confirmPassword}
                 type="password"
                 onKeyDown={(e) => handleKeyDown(e)}
                 onChange={(e) => {
-                    setPassword(e.target.value);
+                    setConfirmPassword(e.target.value);
                     (e.target.value === '')?setError(true):setError(false);
                 }}
                 />
