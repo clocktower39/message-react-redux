@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, TextField, Grid, makeStyles } from '@material-ui/core';
+import { Button, Container, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { addMessage } from '../../Redux/actions';
 import socketIOClient from "socket.io-client";
@@ -71,6 +71,7 @@ export const MessageInput = (props) => {
     }, []);
 
     return (
+      <Container maxWidth="sm">
       <Grid container className={classes.root}>
         <Grid item xs={8} md={4}>
           <TextField
@@ -101,6 +102,7 @@ export const MessageInput = (props) => {
           </Button>
         </Grid>
       </Grid>
+      </Container>
     );
 }
 

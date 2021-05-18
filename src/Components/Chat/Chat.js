@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     appBar: {
       top: 'auto',
       bottom: 0,
+      backgroundColor: '#23272a',
     }
   });
   
