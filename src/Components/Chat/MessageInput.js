@@ -73,7 +73,7 @@ export const MessageInput = (props) => {
     return (
       <Container maxWidth="sm">
       <Grid container className={classes.root}>
-        <Grid item xs={8} md={4}>
+        <Grid item xs={8}>
           <TextField
             fullWidth
             error={error === true ? true : false}
@@ -91,7 +91,7 @@ export const MessageInput = (props) => {
             }}
           />
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={4}>
           <Button
             variant="contained"
             color="primary"
