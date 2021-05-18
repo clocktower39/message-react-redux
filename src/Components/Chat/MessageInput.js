@@ -45,7 +45,6 @@ export const MessageInput = (props) => {
 
     const handleMessageSubmit = (e) => {
         if(name !== '' && message !== ''){
-            dispatch(addMessage(name,message));
             let newMessage = JSON.stringify({name:name, message:message});
             
             fetch('https://immense-harbor-48108.herokuapp.com/messages', {
@@ -67,9 +66,7 @@ export const MessageInput = (props) => {
     useEffect(() => {
       const socket = socketIOClient(ENDPOINT);
       socket.on("message", data => {
-        if(name !== data.name){
-          dispatch(addMessage(data.name,data.message));
-        }
+        dispatch(addMessage(data.name,data.message));
       });// eslint-disable-next-line
     }, []);
 
