@@ -23,6 +23,7 @@ export const Login = (props) => {
     const [error, setError] = useState(false);
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [password, setPassword] = useState('');
+    const [disableButtonDuringLogin, setDisableButtonDuringLogin] = useState(false);
     const user = useSelector(state => state.user);
 
     const handleKeyDown = (e) => {
@@ -32,8 +33,17 @@ export const Login = (props) => {
     }
     const handleLoginAttempt = (e) => {
         if(username  && password){
-            dispatch(loginUser(JSON.stringify({username: username, password: password})));
+            setDisableButtonDuringLogin(true);
+            dispatch(loginUser(JSON.stringify({username: username, password: password}))).then(res=>{
+                if(res.error){
+                    setError(true);
+                }
+                setDisableButtonDuringLogin(false);
+            });
             localStorage.setItem('username', username);
+        }
+        else{
+            setDisableButtonDuringLogin(false);
         }
     }
 
@@ -78,6 +88,7 @@ export const Login = (props) => {
                 color="primary"
                 className={classes.button}
                 onClick={(e) => handleLoginAttempt(e)}
+                disabled={disableButtonDuringLogin}
                 >
                 Login
                 </Button>
