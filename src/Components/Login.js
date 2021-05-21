@@ -44,6 +44,7 @@ export const Login = (props) => {
         }
         else{
             setDisableButtonDuringLogin(false);
+            setError(true);
         }
     }
 
