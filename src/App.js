@@ -23,7 +23,7 @@ function App(props) {
         <Router basename="/message/">
         <Navbar />
           <Switch>
-            <AuthRoute exact path="/" component={Chat}/>
+            <AuthRoute exact path="/" component={Chat} socket={props.socket} />
             <Route exact path="/login"><Login /></Route>
             <Route exact path="/signup"><SignUp /></Route>
           </Switch>

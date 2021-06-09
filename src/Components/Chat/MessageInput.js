@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Button, Container, TextField, Grid, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 import { addMessage } from '../../Redux/actions';
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "https://immense-harbor-48108.herokuapp.com";
 
 const useStyles = makeStyles({
     root: {
@@ -64,8 +62,7 @@ export const MessageInput = (props) => {
     }
 
     useEffect(() => {
-      const socket = socketIOClient(ENDPOINT);
-      socket.on("message", data => {
+      props.socket.on("message", data => {
         dispatch(addMessage(data.name,data.message));
       });// eslint-disable-next-line
     }, []);

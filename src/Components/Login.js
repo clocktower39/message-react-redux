@@ -21,7 +21,7 @@ export const Login = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
-    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const [username, setUsername] = useState((localStorage.getItem('username'))?localStorage.getItem('username'):'');
     const [password, setPassword] = useState('');
     const [disableButtonDuringLogin, setDisableButtonDuringLogin] = useState(false);
     const user = useSelector(state => state.user);

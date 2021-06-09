@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     }
   });
   
-export default function Chat() {
+export default function Chat(props) {
     const classes = useStyles();
     return (
         <>
@@ -24,7 +24,7 @@ export default function Chat() {
             <MessageList />
             </div>
             <AppBar className={classes.appBar} position="fixed">
-            <MessageInput />
+            <MessageInput socket={props.socket} />
             </AppBar>
         </>
     )

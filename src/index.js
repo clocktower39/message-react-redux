@@ -5,11 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "https://immense-harbor-48108.herokuapp.com";
+const socket = socketIOClient(ENDPOINT,{transports: ['websocket'], upgrade: false});
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <App  socket={socket}/>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
