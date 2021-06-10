@@ -2,6 +2,7 @@ import Navbar from './Components/Navbar';
 import Login from './Components/Login';
 import SignUp from './Components/SignUp';
 import Chat from './Components/Chat/Chat';
+import Account from './Components/Account/Account';
 import AuthRoute from './Components/AuthRoute';
 import { Container, makeStyles } from '@material-ui/core';
 
@@ -24,6 +25,7 @@ function App(props) {
         <Navbar />
           <Switch>
             <AuthRoute exact path="/" component={Chat} socket={props.socket} />
+            <AuthRoute exact path="/" component={Account} socket={props.socket} />
             <Route exact path="/login"><Login /></Route>
             <Route exact path="/signup"><SignUp /></Route>
           </Switch>
