@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     },
     messageListHeader: {
         textAlign: 'center',
+        color: 'white',
     },
     messageContainer: {
         display: 'flex',
@@ -55,7 +56,7 @@ export const MessageList = (props) => {
             <h4 className={classes.messageListHeader}>Messages:</h4>
             {props.messages.map((message,i)=>{
                 return (
-                <div key={message._id || i} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5'}:null}>
+                <div key={message._id || i} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5', color: 'white'}:null}>
                     <Person className={classes.personIcon} />
                     <div>
                         <Typography variant='h6' display='inline'>{message.name} </Typography>
