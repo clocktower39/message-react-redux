@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Grid, Typography, makeStyles } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
@@ -13,10 +13,16 @@ export default function Account(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <Typography variant="body1">{user.username}</Typography>
-            <Typography variant="body1">{user.firstName}</Typography>
-            <Typography variant="body1">{user.lastName}</Typography>
-            <Typography variant="body1">{user.email}</Typography>
+            <Grid container>
+            <Grid item xs={6}><Typography variant="body1">user.username</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">{user.username}</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">user.firstName</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">{user.firstName}</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">user.lastName</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">{user.lastName}</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">user.email</Typography></Grid>
+            <Grid item xs={6}><Typography variant="body1">{user.email}</Typography></Grid>
+            </Grid>
         </div>
     )
 }
