@@ -60,7 +60,7 @@ export const MessageList = (props) => {
                     <Person className={classes.personIcon} />
                     <div>
                         <Typography variant='h6' display='inline'>{message.name} </Typography>
-                        <Typography variant='subtitle1' display='inline'>{(message.timeStamp == null)? null:new Date(message.timeStamp).toLocaleTimeString()}</Typography>
+                        <Typography variant='subtitle1' display='inline'>{(message.timeStamp == null)? null:`| ${new Date(message.timeStamp).toLocaleTimeString()} | ${new Date(message.timeStamp).toLocaleDateString()}`}</Typography>
                         <Typography variant='body1' display='block'>{message.message}</Typography>
                     </div>
                 </div>);
