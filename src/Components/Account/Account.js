@@ -6,6 +6,22 @@ const useStyles = makeStyles({
   root: {
     paddingTop: "100px",
   },
+  TextField: {
+    "& input": {
+        color: "#ccc",
+      },
+      "& label": {
+        color: "#ccc",
+      },
+      '& label.Mui-focused': {
+        color: "#ccc",
+      },
+      '& .MuiOutlinedInput-root': {
+        '&.Mui-focused fieldset': {
+          borderColor: '#ccc',
+        },
+      },
+  },
 });
 
 export default function Account(props) {
@@ -25,6 +41,7 @@ export default function Account(props) {
       <Grid container spacing={3} justify="center">
         <Grid item xs={12}>
           <TextField
+            className={classes.TextField}
             label="Username"
             variant="outlined"
             value={username}
@@ -34,6 +51,7 @@ export default function Account(props) {
         </Grid>
         <Grid item xs={12}>
           <TextField
+            className={classes.TextField}
             label="First Name"
             variant="outlined"
             value={firstName}
@@ -43,6 +61,7 @@ export default function Account(props) {
         </Grid>
         <Grid item xs={12}>
           <TextField
+            className={classes.TextField}
             label="Last Name"
             variant="outlined"
             value={lastName}
@@ -52,6 +71,7 @@ export default function Account(props) {
         </Grid>
         <Grid item xs={12}>
           <TextField
+            className={classes.TextField}
             label="Email"
             variant="outlined"
             value={email}
