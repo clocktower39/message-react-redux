@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, TextField, makeStyles } from "@material-ui/core";
+import { Button, Grid, TextField, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
@@ -78,6 +78,10 @@ export default function Account(props) {
             fullWidth
             onChange={(e) => handleChange(e, setEmail)}
           />
+        </Grid>
+        <Grid item container xs={12} justify="center" >
+          <Button variant="outlined" >Cancel</Button>
+          <Button variant="outlined" >Save</Button>
         </Grid>
       </Grid>
     </div>
