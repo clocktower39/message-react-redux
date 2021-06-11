@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
-import { AppBar, Button, makeStyles, Typography } from '@material-ui/core';
+import { AppBar, Button, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Settings } from '@material-ui/icons';
 import { connect, useDispatch } from 'react-redux'
 import { logoutUser } from '../Redux/actions';
 import Logo from '../img/BonfireLogo.png';
@@ -63,7 +64,10 @@ export const Navbar = (props) => {
                 </Button>
             </Link>
         
-            :
+            :<>
+            <Link to="/account">
+            <IconButton><Settings /></IconButton>
+            </Link>
             <Button
             variant="contained"
             color="secondary"
@@ -71,7 +75,8 @@ export const Navbar = (props) => {
             onClick={(e) => handleLogout()}
             >
             Logout
-            </Button>}
+            </Button>
+            </>}
             
         </AppBar>
     )
