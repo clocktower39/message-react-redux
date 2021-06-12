@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Grid, TextField, makeStyles } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
+import { updateUserInfo } from '../../Redux/actions';
 
 const useStyles = makeStyles({
   root: {
@@ -40,7 +41,7 @@ export default function Account(props) {
 
   const handleSave = () => {
     //temporary change, need to re-authenticate with new JWT token after any account information update
-
+    dispatch(updateUserInfo({username, firstName, lastName, email}))
   }
 
   return (

@@ -17,6 +17,7 @@ export let reducer = (state = { messages, user }, action) => {
             return { 
                 ...state,
                 user: {
+                    ...state.user,
                     ...action.user,
                 },
             }

@@ -5,6 +5,7 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const SIGNUP_USER = 'SIGNUP_USER';
 export const UPDATE_MESSAGE_LIST = 'UPDATE_MESSAGE_LIST';
+export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
 export const ERROR = 'ERROR';
 
 export function addMessage(name, message){
@@ -89,5 +90,12 @@ export function logoutUser(){
         return dispatch({
             type: LOGOUT_USER
         })
+    }
+}
+
+export const updateUserInfo = (user) => {
+    return {
+        type: LOGIN_USER,
+        user
     }
 }
