@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import { makeStyles, Typography } from '@material-ui/core';
-import { Person } from '@material-ui/icons/';
+import { connect, useDispatch } from 'react-redux';
+import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Person, Delete } from '@material-ui/icons/';
 import { updateMessageList } from '../../Redux/actions';
-import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles({
     root: {
@@ -63,6 +62,7 @@ export const MessageList = (props) => {
                         <Typography variant='subtitle1' display='inline'>{(message.timeStamp == null)? null:`| ${new Date(message.timeStamp).toLocaleTimeString()} | ${new Date(message.timeStamp).toLocaleDateString()}`}</Typography>
                         <Typography variant='body1' display='block'>{message.message}</Typography>
                     </div>
+                        {(message.name === props.user.username)?<IconButton><Delete /></IconButton>:null}
                 </div>);
             })}
             <div ref={messagesEndRef} />
