@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Grid, TextField, makeStyles } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -27,6 +27,8 @@ const useStyles = makeStyles({
 export default function Account(props) {
   const user = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState(user.username);
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
@@ -35,6 +37,11 @@ export default function Account(props) {
   const classes = useStyles();
 
   const handleChange = (e, setter) => setter(e.target.value);
+
+  const handleSave = () => {
+    //temporary change, need to re-authenticate with new JWT token after any account information update
+
+  }
 
   return (
     <div className={classes.root}>
@@ -81,7 +88,9 @@ export default function Account(props) {
         </Grid>
         <Grid item container xs={12} justify="center" >
           <Button variant="outlined" >Cancel</Button>
-          <Button variant="outlined" >Save</Button>
+          <Button variant="outlined"
+            onClick={handleSave}
+          >Save</Button>
         </Grid>
       </Grid>
     </div>
