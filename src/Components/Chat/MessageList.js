@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { IconButton, makeStyles, Typography } from '@material-ui/core';
-import { Person, Delete } from '@material-ui/icons/';
+import { Grid, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Person, Delete, EmojiEmotions } from '@material-ui/icons/';
 import { updateMessageList } from '../../Redux/actions';
 
 const useStyles = makeStyles({
@@ -55,15 +55,19 @@ export const MessageList = (props) => {
             <h4 className={classes.messageListHeader}>Messages:</h4>
             {props.messages.map((message,i)=>{
                 return (
-                <div key={message._id || i} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5', color: 'white'}:null}>
-                    <Person className={classes.personIcon} />
-                    <div>
+                <Grid key={message._id || i} className={classes.messageContainer} style={(message.name === props.user.username)?{backgroundColor: '#3f51b5', color: 'white'}:null} container>
+                    <Grid item xs={2}>
+                        <Person className={classes.personIcon} />
+                    </Grid>
+                    <Grid item xs={8}>
                         <Typography variant='h6' display='inline'>{message.name} </Typography>
                         <Typography variant='subtitle1' display='inline'>{(message.timeStamp == null)? null:`| ${new Date(message.timeStamp).toLocaleTimeString()} | ${new Date(message.timeStamp).toLocaleDateString()}`}</Typography>
-                        <Typography variant='body1' display='block'>{message.message}</Typography>
-                    </div>
-                        {(message.name === props.user.username)?<IconButton><Delete /></IconButton>:null}
-                </div>);
+                        <Typography variant='subtitle1' display='block'>{message.message}</Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                        {(message.name === props.user.username)?<IconButton><Delete /></IconButton>:<IconButton><EmojiEmotions /></IconButton>}
+                    </Grid>
+                </Grid>);
             })}
             <div ref={messagesEndRef} />
         </div>
