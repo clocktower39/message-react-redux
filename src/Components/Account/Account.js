@@ -44,6 +44,13 @@ export default function Account(props) {
     dispatch(updateUserInfo({username, firstName, lastName, email}))
   }
 
+  const handleCancel = () => {
+      setUsername(user.username);
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setEmail(user.email);
+  }
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3} justify="center">
@@ -88,7 +95,9 @@ export default function Account(props) {
           />
         </Grid>
         <Grid item container xs={12} justify="center" >
-          <Button variant="outlined" >Cancel</Button>
+          <Button variant="outlined" 
+            onClick={handleCancel}
+          >Cancel</Button>
           <Button variant="outlined"
             onClick={handleSave}
           >Save</Button>
