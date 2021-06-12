@@ -64,9 +64,9 @@ export const Navbar = (props) => {
                 </Button>
             </Link>
         
-            :<>
+            :<div>
             <Link to="/account">
-            <IconButton><Settings /></IconButton>
+            <IconButton style={{color: 'white'}}><Settings /></IconButton>
             </Link>
             <Button
             variant="contained"
@@ -76,7 +76,7 @@ export const Navbar = (props) => {
             >
             Logout
             </Button>
-            </>}
+            </div>}
             
         </AppBar>
     )

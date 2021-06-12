@@ -7,6 +7,9 @@ const useStyles = makeStyles({
   root: {
     paddingTop: "100px",
   },
+  button:{
+      color: '#ccc',
+  },
   TextField: {
     "& input": {
         color: "#ccc",
@@ -96,9 +99,11 @@ export default function Account(props) {
         </Grid>
         <Grid item container xs={12} justify="center" >
           <Button variant="outlined" 
+            className={classes.button}
             onClick={handleCancel}
           >Cancel</Button>
           <Button variant="outlined"
+            className={classes.button}
             onClick={handleSave}
           >Save</Button>
         </Grid>
