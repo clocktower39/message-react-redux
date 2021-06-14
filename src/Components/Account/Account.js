@@ -101,7 +101,7 @@ export default function Account(props) {
           <Button variant="outlined" 
             className={classes.button}
             onClick={handleCancel}
-          >Cancel</Button>
+          >Reset</Button>
           <Button variant="outlined"
             className={classes.button}
             onClick={handleSave}
