@@ -16,10 +16,24 @@ export function addMessage(name, message){
         timeStamp: (new Date()),
     }
 }
+
 export function updateMessageList(messages){
     return {
         type: UPDATE_MESSAGE_LIST,
         messages: messages
+    }
+}
+
+export function deleteMessage(messageToDelete){
+    return async (dispatch, getState) => {
+        const state = getState();
+
+        const messages = state.messages.filter((message)=>message._id!==messageToDelete._id)
+
+        return dispatch({
+            type: UPDATE_MESSAGE_LIST,
+            messages
+        });
     }
 }
 

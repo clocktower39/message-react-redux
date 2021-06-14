@@ -1,8 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { connect, useDispatch } from "react-redux";
-import { Grid, IconButton, Menu, MenuItem, makeStyles, Typography } from "@material-ui/core";
+import {
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import { Person, Delete, MoreHoriz } from "@material-ui/icons/";
-import { updateMessageList } from "../../Redux/actions";
+import { updateMessageList, deleteMessage } from "../../Redux/actions";
 
 const useStyles = makeStyles({
   root: {
@@ -48,7 +55,6 @@ export const MessageList = (props) => {
       .then((data) => dispatch(updateMessageList([...data])));
     // eslint-disable-next-line
   }, []);
-
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -97,24 +103,25 @@ export const MessageList = (props) => {
             </Grid>
             <Grid item xs={2}>
               {message.name === props.user.username ? (
-                <IconButton>
+                <IconButton onClick={()=>dispatch(deleteMessage(message))}>
                   <Delete />
                 </IconButton>
-              ) : (<>
-                <IconButton  aria-haspopup="true" onClick={handleClick}>
-                  <MoreHoriz />
-                </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>👍🏽</MenuItem>
-        <MenuItem onClick={handleClose}>🍞</MenuItem>
-        <MenuItem onClick={handleClose}>👎🏽</MenuItem>
-      </Menu>
+              ) : (
+                <>
+                  <IconButton aria-haspopup="true" onClick={handleClick}>
+                    <MoreHoriz />
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleClose}>👍🏽</MenuItem>
+                    <MenuItem onClick={handleClose}>🍞</MenuItem>
+                    <MenuItem onClick={handleClose}>👎🏽</MenuItem>
+                  </Menu>
                 </>
               )}
             </Grid>
