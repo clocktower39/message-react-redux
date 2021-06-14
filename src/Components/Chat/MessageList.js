@@ -15,6 +15,10 @@ const useStyles = makeStyles({
   root: {
     padding: "75px 0 95px 0",
   },
+  dateAndTime:{
+      fontSize: '16px',
+      opacity: '.33',
+  },
   messageListHeader: {
     textAlign: "center",
     color: "white",
@@ -88,14 +92,17 @@ export const MessageList = (props) => {
               <Typography variant="h6" display="inline">
                 {message.name}{" "}
               </Typography>
-              <Typography variant="subtitle1" display="inline">
+              <Typography variant="subtitle1" display="inline" 
+                  className={classes.dateAndTime}>
                 {message.timeStamp == null
                   ? null
-                  : `| ${new Date(
+                  : `${new Date(
+                    message.timeStamp
+                  ).toLocaleDateString().substr(0,new Date(
                       message.timeStamp
-                    ).toLocaleTimeString()} | ${new Date(
+                    ).toLocaleDateString().length - 5)} ${new Date(
                       message.timeStamp
-                    ).toLocaleDateString()}`}
+                    ).toLocaleTimeString()}`}
               </Typography>
               <Typography variant="subtitle1" display="block">
                 {message.message}
