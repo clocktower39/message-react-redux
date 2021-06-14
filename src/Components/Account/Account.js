@@ -1,30 +1,41 @@
 import React, { useState } from "react";
-import { Button, Grid, TextField, makeStyles } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  Grid,
+  TextField,
+  makeStyles,
+} from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUserInfo } from '../../Redux/actions';
+import { updateUserInfo } from "../../Redux/actions";
 
 const useStyles = makeStyles({
   root: {
     paddingTop: "100px",
   },
-  button:{
-      color: '#ccc',
+  Avatar: {
+    height: "5em",
+    width: "5em",
+  },
+  button: {
+    color: "#ccc",
   },
   TextField: {
     "& input": {
-        color: "#ccc",
+      color: "#ccc",
+    },
+    "& label": {
+      color: "#ccc",
+    },
+    "& label.Mui-focused": {
+      color: "#ccc",
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#ccc",
       },
-      "& label": {
-        color: "#ccc",
-      },
-      '& label.Mui-focused': {
-        color: "#ccc",
-      },
-      '& .MuiOutlinedInput-root': {
-        '&.Mui-focused fieldset': {
-          borderColor: '#ccc',
-        },
-      },
+    },
   },
 });
 
@@ -44,19 +55,24 @@ export default function Account(props) {
 
   const handleSave = () => {
     //temporary change, need to re-authenticate with new JWT token after any account information update
-    dispatch(updateUserInfo({username, firstName, lastName, email}))
-  }
+    dispatch(updateUserInfo({ username, firstName, lastName, email }));
+  };
 
   const handleCancel = () => {
-      setUsername(user.username);
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setEmail(user.email);
-  }
+    setUsername(user.username);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmail(user.email);
+  };
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3} justify="center">
+        <Grid container item xs={12} justify="center">
+          <IconButton>
+            <Avatar className={classes.Avatar} />
+          </IconButton>
+        </Grid>
         <Grid item xs={12}>
           <TextField
             className={classes.TextField}
@@ -97,15 +113,21 @@ export default function Account(props) {
             onChange={(e) => handleChange(e, setEmail)}
           />
         </Grid>
-        <Grid item container xs={12} justify="center" >
-          <Button variant="outlined" 
+        <Grid item container xs={12} justify="center">
+          <Button
+            variant="outlined"
             className={classes.button}
             onClick={handleCancel}
-          >Reset</Button>
-          <Button variant="outlined"
+          >
+            Reset
+          </Button>
+          <Button
+            variant="outlined"
             className={classes.button}
             onClick={handleSave}
-          >Save</Button>
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
     </div>

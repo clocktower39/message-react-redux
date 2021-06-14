@@ -15,9 +15,9 @@ const useStyles = makeStyles({
   root: {
     padding: "75px 0 95px 0",
   },
-  dateAndTime:{
-      fontSize: '16px',
-      opacity: '.33',
+  dateAndTime: {
+    fontSize: "16px",
+    opacity: ".33",
   },
   messageListHeader: {
     textAlign: "center",
@@ -45,6 +45,7 @@ export const MessageList = (props) => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   useEffect(() => {
     scrollToBottom();
   }, [props.messages]);
@@ -92,17 +93,20 @@ export const MessageList = (props) => {
               <Typography variant="h6" display="inline">
                 {message.name}{" "}
               </Typography>
-              <Typography variant="subtitle1" display="inline" 
-                  className={classes.dateAndTime}>
+              <Typography
+                variant="subtitle1"
+                display="inline"
+                className={classes.dateAndTime}
+              >
                 {message.timeStamp == null
                   ? null
-                  : `${new Date(
-                    message.timeStamp
-                  ).toLocaleDateString().substr(0,new Date(
-                      message.timeStamp
-                    ).toLocaleDateString().length - 5)} ${new Date(
-                      message.timeStamp
-                    ).toLocaleTimeString()}`}
+                  : `${new Date(message.timeStamp)
+                      .toLocaleDateString()
+                      .substr(
+                        0,
+                        new Date(message.timeStamp).toLocaleDateString()
+                          .length - 5
+                      )} ${new Date(message.timeStamp).toLocaleTimeString()}`}
               </Typography>
               <Typography variant="subtitle1" display="block">
                 {message.message}
@@ -110,7 +114,7 @@ export const MessageList = (props) => {
             </Grid>
             <Grid item xs={2}>
               {message.name === props.user.username ? (
-                <IconButton onClick={()=>dispatch(deleteMessage(message))}>
+                <IconButton onClick={() => dispatch(deleteMessage(message))}>
                   <Delete />
                 </IconButton>
               ) : (
