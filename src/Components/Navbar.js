@@ -66,7 +66,7 @@ export const Navbar = (props) => {
         
             :<div>
             <Link to="/account">
-            <IconButton style={{color: 'white'}}><Settings /></IconButton>
+            <IconButton style={props.user.username === "GUEST"?{display: 'none'}:{color: 'white'}}><Settings /></IconButton>
             </Link>
             <Button
             variant="contained"
