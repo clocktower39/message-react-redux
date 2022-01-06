@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { connect, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Grid,
   IconButton,
@@ -10,8 +10,9 @@ import {
 import { Person, Delete, MoreHoriz } from '@mui/icons-material';
 import { updateMessageList, deleteMessage } from "../../Redux/actions";
 
-export const MessageList = (props) => {
-
+export const MessageList = () => {
+  const messages = useSelector(state => state.messages);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
 
@@ -21,7 +22,7 @@ export const MessageList = (props) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [props.messages]);
+  }, [messages]);
 
   useEffect(() => {
     fetch("https://immense-harbor-48108.herokuapp.com/messages/", {
@@ -52,26 +53,26 @@ export const MessageList = (props) => {
         textAlign: "center",
         color: "white",
       }}>Messages:</h4>
-      {props.messages.map((message, i) => {
+      {messages.map((message, i) => {
         return (
           <Grid
             key={message._id || i}
             sx={
-              message.name === props.user.username
+              message.name === user.username
                 ? {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  margin: "10px",
+                  margin: "10px 0px",
                   borderRadius: "7.5px",
-                  backgroundColor: "#3f51b5",
+                  backgroundColor: "rgb(21, 101, 192)",
                   color: "white"
                 }
                 : {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  margin: "10px",
+                  margin: "10px 0px",
                   borderRadius: "7.5px",
                   backgroundColor: "#23272A",
                   color: "white"
@@ -111,7 +112,7 @@ export const MessageList = (props) => {
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              {message.name === props.user.username ? (
+              {message.name === user.username ? (
                 <IconButton onClick={() => dispatch(deleteMessage(message))}>
                   <Delete />
                 </IconButton>
@@ -142,13 +143,4 @@ export const MessageList = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  messages: [...state.messages],
-  user: state.user,
-});
-
-const mapDispatchToProps = {
-  updateMessageList,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessageList);
+export default MessageList;

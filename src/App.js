@@ -6,7 +6,6 @@ import Account from './Components/Account/Account';
 import AuthRoute from './Components/AuthRoute';
 import { Container, ThemeProvider } from '@mui/material';
 
-import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { theme } from './theme';
@@ -23,7 +22,7 @@ function App(props) {
           <Navbar />
           <Switch>
             <AuthRoute exact path="/" component={Chat} socket={props.socket} />
-            <AuthRoute exact path="/account" component={Account} props={props} />
+            <AuthRoute exact path="/account" component={Account} />
             <Route exact path="/login"><Login /></Route>
             <Route exact path="/signup"><SignUp /></Route>
           </Switch>
@@ -33,9 +32,4 @@ function App(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  messages: [...state.messages],
-  user: { ...state.user },
-})
-
-export default connect(mapStateToProps)(App);
+export default App;

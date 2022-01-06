@@ -5,41 +5,11 @@ import {
   IconButton,
   Grid,
   TextField,
-  makeStyles,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserInfo } from "../../Redux/actions";
 
-const useStyles = makeStyles({
-  root: {
-    paddingTop: "100px",
-  },
-  Avatar: {
-    height: "5em",
-    width: "5em",
-  },
-  button: {
-    color: "#ccc",
-  },
-  TextField: {
-    "& input": {
-      color: "#ccc",
-    },
-    "& label": {
-      color: "#ccc",
-    },
-    "& label.Mui-focused": {
-      color: "#ccc",
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: "#ccc",
-      },
-    },
-  },
-});
-
-export default function Account(props) {
+export default function Account() {
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -48,8 +18,6 @@ export default function Account(props) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
-
-  const classes = useStyles();
 
   const handleChange = (e, setter) => setter(e.target.value);
 
@@ -66,16 +34,15 @@ export default function Account(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3} justify="center">
-        <Grid container item xs={12} justify="center">
+    <div style={{ paddingTop: '100px'}}>
+      <Grid container spacing={3} sx={{ justifyContent: "center"}} >
+        <Grid container item xs={12} sx={{ justifyContent: "center"}} >
           <IconButton>
-            <Avatar className={classes.Avatar} />
+            <Avatar sx={{ height: "5em",     width: "5em", }} />
           </IconButton>
         </Grid>
         <Grid item xs={12}>
           <TextField
-            className={classes.TextField}
             label="Username"
             variant="outlined"
             value={username}
@@ -85,7 +52,6 @@ export default function Account(props) {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            className={classes.TextField}
             label="First Name"
             variant="outlined"
             value={firstName}
@@ -95,7 +61,6 @@ export default function Account(props) {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            className={classes.TextField}
             label="Last Name"
             variant="outlined"
             value={lastName}
@@ -105,7 +70,6 @@ export default function Account(props) {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            className={classes.TextField}
             label="Email"
             variant="outlined"
             value={email}
@@ -113,17 +77,15 @@ export default function Account(props) {
             onChange={(e) => handleChange(e, setEmail)}
           />
         </Grid>
-        <Grid item container xs={12} justify="center">
+        <Grid item container xs={12} sx={{ justifyContent: "center"}} >
           <Button
             variant="outlined"
-            className={classes.button}
             onClick={handleCancel}
           >
             Reset
           </Button>
           <Button
             variant="outlined"
-            className={classes.button}
             onClick={handleSave}
           >
             Save
