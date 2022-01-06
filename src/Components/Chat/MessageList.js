@@ -5,39 +5,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  makeStyles,
   Typography,
-} from "@material-ui/core";
-import { Person, Delete, MoreHoriz } from "@material-ui/icons/";
+} from '@mui/material';
+import { Person, Delete, MoreHoriz } from '@mui/icons-material';
 import { updateMessageList, deleteMessage } from "../../Redux/actions";
 
-const useStyles = makeStyles({
-  root: {
-    padding: "75px 0 95px 0",
-  },
-  dateAndTime: {
-    fontSize: "16px",
-    opacity: ".33",
-  },
-  messageListHeader: {
-    textAlign: "center",
-    color: "white",
-  },
-  messageContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "darkgrey",
-    margin: "10px",
-    borderRadius: "7.5px",
-  },
-  personIcon: {
-    padding: "15px",
-  },
-});
-
 export const MessageList = (props) => {
-  const classes = useStyles();
 
   const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
@@ -72,22 +45,44 @@ export const MessageList = (props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <h4 className={classes.messageListHeader}>Messages:</h4>
+    <div style={{
+      padding: "75px 0 95px 0",
+    }}>
+      <h4 style={{
+        textAlign: "center",
+        color: "white",
+      }}>Messages:</h4>
       {props.messages.map((message, i) => {
         return (
           <Grid
             key={message._id || i}
-            className={classes.messageContainer}
-            style={
+            sx={
               message.name === props.user.username
-                ? { backgroundColor: "#3f51b5", color: "white" }
-                : null
+                ? {
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  margin: "10px",
+                  borderRadius: "7.5px",
+                  backgroundColor: "#3f51b5",
+                  color: "white"
+                }
+                : {
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  margin: "10px",
+                  borderRadius: "7.5px",
+                  backgroundColor: "#23272A",
+                  color: "white"
+                }
             }
             container
           >
             <Grid item xs={2}>
-              <Person className={classes.personIcon} />
+              <Person sx={{
+                padding: "15px",
+              }} />
             </Grid>
             <Grid item xs={8}>
               <Typography variant="h6" display="inline">
@@ -96,17 +91,20 @@ export const MessageList = (props) => {
               <Typography
                 variant="subtitle1"
                 display="inline"
-                className={classes.dateAndTime}
+                sx={{
+                  fontSize: "16px",
+                  opacity: ".33",
+                }}
               >
                 {message.timeStamp == null
                   ? null
                   : `${new Date(message.timeStamp)
-                      .toLocaleDateString()
-                      .substr(
-                        0,
-                        new Date(message.timeStamp).toLocaleDateString()
-                          .length - 5
-                      )} ${new Date(message.timeStamp).toLocaleTimeString()}`}
+                    .toLocaleDateString()
+                    .substr(
+                      0,
+                      new Date(message.timeStamp).toLocaleDateString()
+                        .length - 5
+                    )} ${new Date(message.timeStamp).toLocaleTimeString()}`}
               </Typography>
               <Typography variant="subtitle1" display="block">
                 {message.message}

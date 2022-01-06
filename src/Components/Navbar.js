@@ -1,93 +1,70 @@
-import React from 'react'
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AppBar, Button, IconButton, makeStyles, Typography } from '@material-ui/core';
-import { Settings } from '@material-ui/icons';
-import { connect, useDispatch } from 'react-redux'
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { Settings } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../Redux/actions';
 import Logo from '../img/BonfireLogo.png';
 
-const useStyles = makeStyles({
-    root: {
-        textAlign: 'center',
-        padding: '15px',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: '#23272a',
-    },
-    Link: {
-        color: 'white',
-        textDecoration: 'none',
-    }
-  });
-
-export const Navbar = (props) => {
-    const classes = useStyles();
+export const Navbar = () => {
     const dispatch = useDispatch();
     const location = useLocation();
-    
+    const user = useSelector(state => state.user);
+
     const handleLogout = () => {
         localStorage.removeItem('username');
         dispatch(logoutUser());
-      }
-      
+    }
+
     return (
-        <AppBar className={classes.root} >
-            <Link to="/" className={classes.Link} >
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center',}}>
-                    <Typography variant='h4' className={classes.navTitle}>Bonfire</Typography>
-                    <img src={Logo} alt="Bonfire logo" style={{height: '25px', width: '25px',}}/>
-                </div>
-            </Link>
+        <AppBar sx={{
+            backgroundColor: '#23272a',
+        }} >
+            <Toolbar sx={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }} >
+                <Typography component={Link} to="/" variant='h4' sx={{ display: 'flex', textDecoration: 'none', color: '#FF5900' }} >Bonfire <img src={Logo} alt="Bonfire logo" style={{ height: '25px', width: '25px', display: 'flex', alignSelf: 'center' }} /></Typography>
 
-            {(!props.user.username)?
 
-            (location.pathname === '/signup')?
+                {(!user.username) ?
 
-            <Link to="/">
-                <Button
-                variant="contained"
-                color="secondary"
-                className={classes.button}
-                >
-                Login
-                </Button>
-            </Link>
-            :
-        
-            <Link to="/signup">
-                <Button
-                variant="contained"
-                color="secondary"
-                className={classes.button}
-                >
-                Sign Up
-                </Button>
-            </Link>
-        
-            :<div>
-            <Link to="/account">
-            <IconButton style={props.user.username === "GUEST"?{display: 'none'}:{color: 'white'}}><Settings /></IconButton>
-            </Link>
-            <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            onClick={(e) => handleLogout()}
-            >
-            Logout
-            </Button>
-            </div>}
-            
+                    (location.pathname === '/signup') ?
+
+                        <Typography component={Link} to="/" sx={{ display: 'flex', }} >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                            >
+                                Login
+                            </Button>
+                        </Typography>
+                        :
+
+                        <Typography component={Link} to="/signup">
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                            >
+                                Sign Up
+                            </Button>
+                        </Typography>
+
+                    : <div>
+                        <Link to="/account">
+                            <IconButton style={user.username === "GUEST" ? { display: 'none' } : { color: 'white' }}><Settings /></IconButton>
+                        </Link>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={(e) => handleLogout()}
+                        >
+                            Logout
+                        </Button>
+                    </div>}
+            </Toolbar>
         </AppBar>
     )
 }
 
-const mapStateToProps = (state) => ({
-    user: {...state.user},
-})
-
-const mapDispatchToProps = {
-    
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default Navbar

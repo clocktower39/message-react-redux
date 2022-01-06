@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { CircularProgress, Typography } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,8 +20,8 @@ export default function CircularIndeterminate() {
 
   return (
     <div className={classes.root}>
-        <Typography variant='h4'>Loading</Typography>
-        <CircularProgress />
+      <Typography variant='h4'>Loading</Typography>
+      <CircularProgress />
     </div>
   );
 }

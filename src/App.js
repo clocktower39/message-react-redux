@@ -4,25 +4,23 @@ import SignUp from './Components/SignUp';
 import Chat from './Components/Chat/Chat';
 import Account from './Components/Account/Account';
 import AuthRoute from './Components/AuthRoute';
-import { Container, makeStyles } from '@material-ui/core';
+import { Container, ThemeProvider } from '@mui/material';
 
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
+import { theme } from './theme';
 
-const useStyles = makeStyles({
-  root: {
-    height: '100%',
-    backgroundColor: '#2C2F33',
-  }
-});
 
 function App(props) {
-  const classes = useStyles();
   return (
-      <Container className={classes.root} maxWidth="sm">
+    <ThemeProvider theme={theme} >
+      <Container sx={{
+        height: '100%',
+        backgroundColor: '#2C2F33',
+      }} maxWidth="sm">
         <Router basename="/message/">
-        <Navbar />
+          <Navbar />
           <Switch>
             <AuthRoute exact path="/" component={Chat} socket={props.socket} />
             <AuthRoute exact path="/account" component={Account} props={props} />
@@ -31,12 +29,13 @@ function App(props) {
           </Switch>
         </Router>
       </Container>
+    </ThemeProvider>
   );
 }
 
 const mapStateToProps = (state) => ({
   messages: [...state.messages],
-  user: {...state.user},
+  user: { ...state.user },
 })
 
 export default connect(mapStateToProps)(App);
