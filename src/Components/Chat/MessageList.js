@@ -25,13 +25,7 @@ export const MessageList = () => {
   }, [messages]);
 
   useEffect(() => {
-    fetch("https://immense-harbor-48108.herokuapp.com/messages/", {
-      headers: new Headers({
-        Authorization: "Bearer " + localStorage.getItem("JWT_AUTH_TOKEN"),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => dispatch(updateMessageList([...data])));
+    dispatch(updateMessageList());
     // eslint-disable-next-line
   }, []);
 

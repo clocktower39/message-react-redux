@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, TextField, Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { addMessage } from "../../Redux/actions";
+import { addMessage, sendMessage } from "../../Redux/actions";
 
 export const MessageInput = (props) => {
   const [error, setError] = useState(false);
@@ -16,23 +16,11 @@ export const MessageInput = (props) => {
   };
 
   const handleMessageSubmit = (e) => {
-    if (name !== "" && message !== "") {
-      let newMessage = JSON.stringify({ name: name, message: message });
-
-      fetch("https://immense-harbor-48108.herokuapp.com/messages", {
-        method: "post",
-        dataType: "json",
-        body: newMessage,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-
-      setMessage("");
-    } else {
-      console.log(e.target);
+    if (name !== '' && message !== '') {
+      dispatch(sendMessage(name, message))
+      setMessage('');
     }
-  };
+  }
 
   useEffect(() => {
     props.socket.on("message", (data) => {

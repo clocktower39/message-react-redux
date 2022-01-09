@@ -8,7 +8,39 @@ export const UPDATE_MESSAGE_LIST = 'UPDATE_MESSAGE_LIST';
 export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
 export const ERROR = 'ERROR';
 
-export function addMessage(name, message){
+// dev server
+// const currentIP = window.location.href.split(":")[1];
+// const serverURL = `http:${currentIP}:8000`;
+
+// live server
+const serverURL = "https://immense-harbor-48108.herokuapp.com";
+
+export function sendMessage(name, message) {
+    return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+        let newMessage = JSON.stringify({ name: name, message: message });
+
+        const response = await fetch(`${serverURL}/messages`, {
+            method: 'post', dataType: 'json',
+            body: newMessage,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            return dispatch({
+                type: ERROR,
+                error: data.error
+            });
+        }
+    }
+}
+
+export function addMessage(name, message) {
     return {
         type: ADD_MESSAGE,
         name: name,
@@ -17,18 +49,29 @@ export function addMessage(name, message){
     }
 }
 
-export function updateMessageList(messages){
-    return {
-        type: UPDATE_MESSAGE_LIST,
-        messages: messages
+export function updateMessageList() {
+    return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+
+        const response = await fetch(`${serverURL}/messages`, {
+            headers: {
+                "Authorization": bearer,
+            }
+        });
+        const data = await response.json();
+
+        return dispatch({
+            type: UPDATE_MESSAGE_LIST,
+            messages: [...data]
+        })
     }
 }
 
-export function deleteMessage(messageToDelete){
+export function deleteMessage(messageToDelete) {
     return async (dispatch, getState) => {
         const state = getState();
 
-        const messages = state.messages.filter((message)=>message._id!==messageToDelete._id)
+        const messages = state.messages.filter((message) => message._id !== messageToDelete._id)
 
         return dispatch({
             type: UPDATE_MESSAGE_LIST,
@@ -37,18 +80,18 @@ export function deleteMessage(messageToDelete){
     }
 }
 
-export function signupUser(user){
+export function signupUser(user) {
     return async (dispatch, getState) => {
-        const response = await fetch('https://immense-harbor-48108.herokuapp.com/signup', {
+        const response = await fetch(`${serverURL}/signup`, {
             method: 'post',
             dataType: 'json',
             body: user,
             headers: {
-              "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8"
             }
-          })
+        })
         const data = await response.json();
-        if(data.error){
+        if (data.error) {
             return dispatch({
                 type: ERROR,
                 error: data.error
@@ -59,18 +102,18 @@ export function signupUser(user){
     }
 }
 
-export function loginUser(user){
+export function loginUser(user) {
     return async (dispatch, getState) => {
-        const response = await fetch('https://immense-harbor-48108.herokuapp.com/login', {
+        const response = await fetch(`${serverURL}/login`, {
             method: 'post',
             dataType: 'json',
             body: user,
             headers: {
-              "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8"
             }
-          })
+        })
         const data = await response.json();
-        if(data.error){
+        if (data.error) {
             return dispatch({
                 type: ERROR,
                 error: data.error
@@ -78,7 +121,7 @@ export function loginUser(user){
         }
         const accessToken = data.accessToken;
         const decodedAccessToken = jwt(accessToken);
-        
+
         localStorage.setItem('JWT_AUTH_TOKEN', accessToken);
         return dispatch({
             type: LOGIN_USER,
@@ -89,16 +132,33 @@ export function loginUser(user){
 
 export const loginJWT = (token) => {
     return async (dispatch, getState) => {
-        const decodedAccessToken = jwt(token);
-        return dispatch({
-            type: LOGIN_USER,
-            user: decodedAccessToken,
-        });
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+
+        const response = await fetch(`${serverURL}/checkAuthToken`, {
+            headers: {
+                "Authorization": bearer,
+            }
+        })
+
+        const text = await response.text().then(item => item);
+        if (text === "Authorized") {
+            const decodedAccessToken = jwt(token);
+            return dispatch({
+                type: LOGIN_USER,
+                user: decodedAccessToken,
+            });
+        }
+        else {
+            localStorage.removeItem('JWT_AUTH_TOKEN');
+            return dispatch({
+                type: LOGOUT_USER
+            })
+        }
     }
 }
 
 
-export function logoutUser(){
+export function logoutUser() {
     return async (dispatch, getState) => {
         localStorage.removeItem('JWT_AUTH_TOKEN');
         return dispatch({
