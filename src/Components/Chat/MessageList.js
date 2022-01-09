@@ -8,9 +8,9 @@ import {
   Typography,
 } from '@mui/material';
 import { Person, Delete, MoreHoriz } from '@mui/icons-material';
-import { updateMessageList, deleteMessage } from "../../Redux/actions";
+import { updateMessageList, deleteMessage, removeMessage } from "../../Redux/actions";
 
-export const MessageList = () => {
+export const MessageList = (props) => {
   const messages = useSelector(state => state.messages);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -27,6 +27,12 @@ export const MessageList = () => {
   useEffect(() => {
     dispatch(updateMessageList());
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    props.socket.on("remove_message", (data) => {
+      dispatch(removeMessage(data));
+    }); // eslint-disable-next-line
   }, []);
 
   const [anchorEl, setAnchorEl] = React.useState(null);

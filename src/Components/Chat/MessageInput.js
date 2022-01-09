@@ -24,7 +24,7 @@ export const MessageInput = (props) => {
 
   useEffect(() => {
     props.socket.on("message", (data) => {
-      dispatch(addMessage(data.name, data.message));
+      dispatch(addMessage(data.name, data.message, data.accountId));
     }); // eslint-disable-next-line
   }, []);
 

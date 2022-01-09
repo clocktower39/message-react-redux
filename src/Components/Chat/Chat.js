@@ -10,7 +10,7 @@ export default function Chat(props) {
         display: 'flex',
         flexDirection: 'column',
       }} >
-        <MessageList />
+        <MessageList socket={props.socket} />
       </div>
       <div style={{
         bottom: 0,

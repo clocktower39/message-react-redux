@@ -9,7 +9,7 @@ import socketIOClient from "socket.io-client";
 
 // dev server
 // const currentIP = window.location.href.split(":")[1];
-// const serverURL = `http:${currentIP}:8000`;
+// const ENDPOINT = `http:${currentIP}:8000`;
 
 // live server
 const ENDPOINT = "https://immense-harbor-48108.herokuapp.com";

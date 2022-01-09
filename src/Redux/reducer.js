@@ -11,7 +11,7 @@ export let reducer = (state = { messages, user }, action) => {
         case ADD_MESSAGE:
             return { 
                 ...state,
-                messages: [...state.messages, {name: action.name, message: action.message, timeStamp: action.timeStamp}]
+                messages: [...state.messages, {name: action.name, message: action.message, timeStamp: action.timeStamp, accountId: action.accountId}]
             }
         case LOGIN_USER:
             return { 

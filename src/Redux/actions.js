@@ -40,11 +40,12 @@ export function sendMessage(name, message) {
     }
 }
 
-export function addMessage(name, message) {
+export function addMessage(name, message, accountId) {
     return {
         type: ADD_MESSAGE,
-        name: name,
-        message: message,
+        name,
+        message,
+        accountId,
         timeStamp: (new Date()),
     }
 }
@@ -67,11 +68,37 @@ export function updateMessageList() {
     }
 }
 
+// user requests to delete their message
 export function deleteMessage(messageToDelete) {
     return async (dispatch, getState) => {
-        const state = getState();
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+        let newMessage = JSON.stringify({ message: messageToDelete });
 
-        const messages = state.messages.filter((message) => message._id !== messageToDelete._id)
+        const response = await fetch(`${serverURL}/deleteMessage`, {
+            method: 'post', dataType: 'json',
+            body: newMessage,
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": bearer,
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            return dispatch({
+                type: ERROR,
+                error: data.error
+            });
+        }
+    }
+}
+
+// server io emit removes request deleted message
+export function removeMessage(removedMessageId) {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const messages = state.messages.filter((message) => message._id !== removedMessageId)
 
         return dispatch({
             type: UPDATE_MESSAGE_LIST,
