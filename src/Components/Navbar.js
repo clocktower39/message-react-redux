@@ -56,7 +56,7 @@ export const Navbar = () => {
           <div>
             <Link to="/account">
               <IconButton
-                style={user.username === "GUEST" ? { display: "none" } : { color: "white" }}
+                sx={user.username === "GUEST" ? { display: "none" } : { color: "white" }}
               >
                 <Settings />
               </IconButton>

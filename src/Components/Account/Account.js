@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Box,
   Button,
   IconButton,
   Grid,
@@ -34,7 +35,7 @@ export default function Account() {
   };
 
   return (
-    <div style={{ paddingTop: '100px'}}>
+    <Box sx={{ paddingTop: '100px'}}>
       <Grid container spacing={3} sx={{ justifyContent: "center"}} >
         <Grid container item xs={12} sx={{ justifyContent: "center"}} >
           <IconButton>
@@ -92,6 +93,6 @@ export default function Account() {
           </Button>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }

@@ -4,6 +4,7 @@ import SignUp from './Components/SignUp';
 import Chat from './Components/Chat/Chat';
 import Account from './Components/Account/Account';
 import AuthRoute from './Components/AuthRoute';
+import NotFoundPage from "./Components/NotFoundPage";
 import { Container, ThemeProvider } from '@mui/material';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -25,6 +26,7 @@ function App(props) {
             <AuthRoute exact path="/account" component={Account} />
             <Route exact path="/login"><Login /></Route>
             <Route exact path="/signup"><SignUp /></Route>
+            <Route exact path="/*"><NotFoundPage /></Route>
           </Switch>
         </Router>
       </Container>

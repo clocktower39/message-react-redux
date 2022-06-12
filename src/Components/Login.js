@@ -2,24 +2,22 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Button, TextField, Grid } from '@mui/material';
-import { makeStyles } from '@mui/styles'
 import { loginUser } from '../Redux/actions';
 
-const useStyles = makeStyles({
+const classes = {
     root: {
         padding: '125px 0',
         textAlign: 'center',
     },
     textField: {
-        margin: '12px',
+        margin: '2.5px',
     },
     button: {
     },
 
-});
+};
 
 export const Login = (props) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
     const [error, setError] = useState(false);
     const [username, setUsername] = useState((localStorage.getItem('username')) ? localStorage.getItem('username') : '');
@@ -64,12 +62,12 @@ export const Login = (props) => {
         return (<Redirect to={{ pathname: '/' }} />)
     }
     return (
-        <Grid container spacing={1} className={classes.root}>
+        <Grid container spacing={1} sx={classes.root}>
             <Grid item xs={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={error === true ? "Please enter your username" : false}
-                    className={classes.textField}
+                    sx={classes.textField}
                     label="Username"
                     value={username}
                     onKeyDown={(e) => handleKeyDown(e)}
@@ -80,7 +78,7 @@ export const Login = (props) => {
                 <TextField
                     error={error === true ? true : false}
                     helperText={(error === true) ? "Please enter your password" : false}
-                    className={classes.textField}
+                    sx={classes.textField}
                     label="Password"
                     value={password}
                     type="password"
@@ -95,7 +93,7 @@ export const Login = (props) => {
                 <Button
                     variant="contained"
                     color="primary"
-                    className={classes.button}
+                    sx={classes.button}
                     onClick={(e) => handleLoginAttempt(e)}
                     disabled={disableButtonDuringLogin}
                 >
@@ -106,7 +104,7 @@ export const Login = (props) => {
                 <Button
                     variant="contained"
                     color="primary"
-                    className={classes.button}
+                    sx={classes.button}
                     onClick={(e) => loginAsGuest(e)}
                     disabled={disableButtonDuringLogin}
                 >
