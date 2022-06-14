@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Button, TextField, Grid } from '@mui/material';
 import { loginUser } from '../Redux/actions';
 
@@ -59,7 +59,7 @@ export const Login = (props) => {
     }
 
     if (user.username) {
-        return (<Redirect to={{ pathname: '/' }} />)
+        return (<Navigate to={{ pathname: '/' }} />)
     }
     return (
         <Grid container spacing={1} sx={classes.root}>

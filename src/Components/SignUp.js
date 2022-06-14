@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Grid, } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { signupUser } from '../Redux/actions';
 
 const classes = {
@@ -42,7 +42,7 @@ export const SignUp = (props) => {
         }
     }
     if (user.username) {
-        return (<Redirect to={{ pathname: '/' }} />)
+        return (<Navigate to={{ pathname: '/' }} />)
     }
 
     return (

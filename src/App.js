@@ -7,7 +7,7 @@ import AuthRoute from './Components/AuthRoute';
 import NotFoundPage from "./Components/NotFoundPage";
 import { Container, ThemeProvider } from '@mui/material';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 import { theme } from './theme';
 
@@ -19,15 +19,21 @@ function App(props) {
         height: '100%',
         backgroundColor: '#2C2F33',
       }} maxWidth="sm">
-        <Router basename="/message/">
+        <Router>
           <Navbar />
-          <Switch>
-            <AuthRoute exact path="/" component={Chat} socket={props.socket} />
-            <AuthRoute exact path="/account" component={Account} />
-            <Route exact path="/login"><Login /></Route>
-            <Route exact path="/signup"><SignUp /></Route>
-            <Route exact path="/*"><NotFoundPage /></Route>
-          </Switch>
+          <Routes>
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<SignUp />} />
+
+            <Route exact path="/" element={<AuthRoute />}>
+              <Route exact path="/" element={<Chat socket={props.socket} />} />
+            </Route>
+            <Route exact path="/account" element={<AuthRoute />}>
+              <Route exact path="/account" element={<Account />} />
+            </Route>
+
+            <Route exact path="/*" element={<NotFoundPage />} />
+          </Routes>
         </Router>
       </Container>
     </ThemeProvider>
