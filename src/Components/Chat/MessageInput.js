@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, TextField, Grid } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addMessage, sendMessage } from "../../Redux/actions";
 
 export const MessageInput = (props) => {
   const [error, setError] = useState(false);
-  const name = useSelector((state) => state.user.username);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
 
@@ -16,15 +15,16 @@ export const MessageInput = (props) => {
   };
 
   const handleMessageSubmit = (e) => {
-    if (name !== '' && message !== '') {
-      dispatch(sendMessage(name, message))
+    if (message !== '') {
+      dispatch(sendMessage(message))
       setMessage('');
     }
   }
 
   useEffect(() => {
     props.socket.on("message", (data) => {
-      dispatch(addMessage(data.name, data.message, data.accountId));
+      console.log('socket message')
+      dispatch(addMessage(data._id, data.message, data.timeStamp, data.user, ));
     }); // eslint-disable-next-line
   }, []);
 

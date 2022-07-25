@@ -15,14 +15,13 @@ export const ERROR = 'ERROR';
 // live server
 const serverURL = "https://immense-harbor-48108.herokuapp.com";
 
-export function sendMessage(name, message) {
+export function sendMessage(message) {
     return async (dispatch, getState) => {
         const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
-        let newMessage = JSON.stringify({ name: name, message: message });
 
         const response = await fetch(`${serverURL}/messages`, {
             method: 'post', dataType: 'json',
-            body: newMessage,
+            body: JSON.stringify({ message }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": bearer,
@@ -40,13 +39,13 @@ export function sendMessage(name, message) {
     }
 }
 
-export function addMessage(name, message, accountId) {
+export function addMessage(messageId, message, timeStamp, user) {
     return {
         type: ADD_MESSAGE,
-        name,
+        messageId,
         message,
-        accountId,
-        timeStamp: (new Date()),
+        timeStamp,
+        user: {...user}
     }
 }
 

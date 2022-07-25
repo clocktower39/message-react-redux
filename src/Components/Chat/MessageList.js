@@ -58,7 +58,7 @@ export const MessageList = (props) => {
           <Grid
             key={message._id || i}
             sx={
-              message.name === user.username
+              message.user.username === user.username
                 ? {
                   display: "flex",
                   flexDirection: "row",
@@ -87,7 +87,7 @@ export const MessageList = (props) => {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="h6" display="inline">
-                {message.name}{" "}
+                {message.user.username}{" "}
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -112,7 +112,7 @@ export const MessageList = (props) => {
               </Typography>
             </Grid>
             <Grid item xs={2}>
-              {message.name === user.username ? (
+              {message.user.username === user.username ? (
                 <IconButton onClick={() => dispatch(deleteMessage(message))}>
                   <Delete />
                 </IconButton>
