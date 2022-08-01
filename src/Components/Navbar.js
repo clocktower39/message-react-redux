@@ -30,7 +30,7 @@ export const Navbar = () => {
       >
         <Typography
           component={Link}
-          to="/"
+          to="/message"
           variant="h4"
           sx={{ display: "flex", textDecoration: "none", color: "#FF5900" }}
         >

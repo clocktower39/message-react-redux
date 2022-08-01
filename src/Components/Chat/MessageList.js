@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  Avatar,
   Grid,
   IconButton,
   Menu,
   MenuItem,
   Typography,
 } from '@mui/material';
-import { Person, Delete, MoreHoriz } from '@mui/icons-material';
-import { updateMessageList, deleteMessage, removeMessage } from "../../Redux/actions";
+import { Delete, MoreHoriz } from '@mui/icons-material';
+import { updateMessageList, deleteMessage, removeMessage, serverURL } from "../../Redux/actions";
 
 export const MessageList = (props) => {
   const messages = useSelector(state => state.messages);
@@ -80,10 +81,8 @@ export const MessageList = (props) => {
             }
             container
           >
-            <Grid item xs={2}>
-              <Person sx={{
-                padding: "15px",
-              }} />
+            <Grid container item xs={2} sx={{ justifyContent: 'center', }}>
+              <Avatar src={message.user.profilePicture ? `${serverURL}/user/image/${message.user.profilePicture}` : null} />
             </Grid>
             <Grid item xs={8}>
               <Typography variant="h6" display="inline">

@@ -1,4 +1,5 @@
 import jwt from 'jwt-decode';
+import axios from "axios";
 
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const LOGIN_USER = 'LOGIN_USER';
@@ -10,10 +11,10 @@ export const ERROR = 'ERROR';
 
 // dev server
 // const currentIP = window.location.href.split(":")[1];
-// const serverURL = `http:${currentIP}:8000`;
+// export const serverURL = `http:${currentIP}:8000`;
 
 // live server
-const serverURL = "https://immense-harbor-48108.herokuapp.com";
+export const serverURL = "https://immense-harbor-48108.herokuapp.com";
 
 export function sendMessage(message) {
     return async (dispatch, getState) => {
@@ -45,7 +46,7 @@ export function addMessage(messageId, message, timeStamp, user) {
         messageId,
         message,
         timeStamp,
-        user: {...user}
+        user: { ...user }
     }
 }
 
@@ -103,6 +104,42 @@ export function removeMessage(removedMessageId) {
             type: UPDATE_MESSAGE_LIST,
             messages
         });
+    }
+}
+
+export function uploadProfilePicture(formData) {
+    return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+
+        axios
+            .post(`${serverURL}/user/image/upload`, formData, { headers: { Authorization: bearer } })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+        // return dispatch({
+        //     type: UPDATE_MESSAGE_LIST,
+        //     messages
+        // });
+    }
+}
+
+export function removeProfilePicture() {
+    return async (dispatch, getState) => {
+        const bearer = `Bearer ${localStorage.getItem('JWT_AUTH_TOKEN')}`;
+
+        fetch(`${serverURL}/user/remove/image`, {
+            headers: {
+                "Authorization": bearer,
+            }
+        })
+        // return dispatch({
+        //     type: UPDATE_MESSAGE_LIST,
+        //     messages
+        // });
     }
 }
 

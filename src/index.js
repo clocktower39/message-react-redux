@@ -6,15 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './Redux/store';
 import socketIOClient from "socket.io-client";
+import { serverURL } from "./Redux/actions";
 
-// dev server
-// const currentIP = window.location.href.split(":")[1];
-// const ENDPOINT = `http:${currentIP}:8000`;
-
-// live server
-const ENDPOINT = "https://immense-harbor-48108.herokuapp.com";
-
-const socket = socketIOClient(ENDPOINT,{transports: ['websocket'], upgrade: false});
+const socket = socketIOClient(serverURL,{transports: ['websocket'], upgrade: false});
 
 ReactDOM.render(
   <React.StrictMode>
