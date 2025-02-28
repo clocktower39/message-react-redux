@@ -4,7 +4,6 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import { Settings } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../Redux/actions";
-import Logo from "../img/BonfireLogo.png";
 
 export const Navbar = () => {
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ export const Navbar = () => {
         >
           Bonfire
           <img
-            src={Logo}
+            src={'/img/BonfireLogo.png'}
             alt="Bonfire logo"
             style={{ height: "25px", width: "25px", display: "flex", alignSelf: "center" }}
           />
