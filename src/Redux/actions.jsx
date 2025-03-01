@@ -1,4 +1,4 @@
-import jwt from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import axios from "axios";
 
 export const ADD_MESSAGE = 'ADD_MESSAGE';
@@ -183,7 +183,7 @@ export function loginUser(user) {
             });
         }
         const accessToken = data.accessToken;
-        const decodedAccessToken = jwt(accessToken);
+        const decodedAccessToken = jwtDecode(accessToken);
 
         localStorage.setItem('JWT_AUTH_TOKEN', accessToken);
         return dispatch({
@@ -205,7 +205,7 @@ export const loginJWT = (token) => {
 
         const text = await response.text().then(item => item);
         if (text === "Authorized") {
-            const decodedAccessToken = jwt(token);
+            const decodedAccessToken = jwtDecode(token);
             return dispatch({
                 type: LOGIN_USER,
                 user: decodedAccessToken,
