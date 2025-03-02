@@ -12,7 +12,7 @@ import './App.css';
 import { theme } from './theme';
 
 
-function App(props) {
+function App({ socket }) {
   return (
     <ThemeProvider theme={theme} >
       <Container sx={{
@@ -25,8 +25,8 @@ function App(props) {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
 
-            <Route exact path="/message" element={<AuthRoute />}>
-              <Route exact path="/message" element={<Chat socket={props.socket} />} />
+            <Route exact path="/" element={<AuthRoute />}>
+              <Route exact path="/" element={<Chat socket={socket} />} />
             </Route>
             <Route exact path="/account" element={<AuthRoute />}>
               <Route exact path="/account" element={<Account />} />

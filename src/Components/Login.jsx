@@ -59,7 +59,7 @@ export const Login = (props) => {
     }
 
     if (user.username) {
-        return (<Navigate to={{ pathname: '/message' }} />)
+        return (<Navigate to={{ pathname: '/' }} />)
     }
     return (
         <Grid container spacing={1} sx={classes.root}>

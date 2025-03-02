@@ -2,7 +2,7 @@ import React from 'react'
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 
-export default function Chat(props) {
+export default function Chat({ socket }) {
   return (
     <>
       <div style={{
@@ -10,7 +10,7 @@ export default function Chat(props) {
         display: 'flex',
         flexDirection: 'column',
       }} >
-        <MessageList socket={props.socket} />
+        <MessageList socket={socket} />
       </div>
       <div style={{
         bottom: 0,
@@ -19,7 +19,7 @@ export default function Chat(props) {
         position: "fixed",
         width: '100%',
       }}>
-        <MessageInput socket={props.socket} />
+        <MessageInput socket={socket} />
       </div>
     </>
   )
