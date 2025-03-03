@@ -35,7 +35,7 @@ export const Navbar = () => {
         >
           Bonfire
           <img
-            src={'/img/BonfireLogo.png'}
+            src={'/message/img/BonfireLogo.png'}
             alt="Bonfire logo"
             style={{ height: "25px", width: "25px", display: "flex", alignSelf: "center" }}
           />

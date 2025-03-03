@@ -19,7 +19,7 @@ function App({ socket }) {
         height: '100%',
         backgroundColor: '#2C2F33',
       }} maxWidth="sm">
-        <Router>
+        <Router basename="/message/">
           <Navbar />
           <Routes>
             <Route exact path="/login" element={<Login />} />
