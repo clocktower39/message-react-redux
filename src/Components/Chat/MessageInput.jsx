@@ -3,7 +3,7 @@ import { Button, Container, TextField, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addMessage, sendMessage } from "../../Redux/actions";
 
-export const MessageInput = (props) => {
+export const MessageInput = ({ socket, }) => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
@@ -16,17 +16,22 @@ export const MessageInput = (props) => {
 
   const handleMessageSubmit = (e) => {
     if (message !== '') {
-      dispatch(sendMessage(message))
+      dispatch(sendMessage(message, socket.id))
       setMessage('');
     }
   }
 
   useEffect(() => {
-    props.socket.on("message", (data) => {
-      console.log('socket message')
-      dispatch(addMessage(data._id, data.message, data.timeStamp, data.user, ));
-    }); // eslint-disable-next-line
-  }, []);
+    const handleMessage = (data) => {
+      dispatch(addMessage(data._id, data.message, data.timeStamp, data.user));
+    };
+  
+    socket.on("message", handleMessage);
+  
+    return () => {
+      socket.off("message", handleMessage);
+    };
+  }, [socket, dispatch]);
 
   return (
     <Container maxWidth="sm">
