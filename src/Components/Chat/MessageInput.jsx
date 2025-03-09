@@ -41,7 +41,7 @@ export const MessageInput = ({ socket, }) => {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          backgroundColor: "#23272a",
+          backgroundColor: "#2C2F33",
           padding: '12.5px 0px'
         }}
       >

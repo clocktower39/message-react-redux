@@ -48,7 +48,7 @@ export const MessageList = (props) => {
 
   return (
     <div style={{
-      padding: "75px 0 95px 0",
+      padding: "75px 5px 0 5px",
     }}>
       <h4 style={{
         textAlign: "center",
