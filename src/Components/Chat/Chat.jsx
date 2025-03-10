@@ -9,7 +9,16 @@ export default function Chat({ socket }) {
   return (
     <Grid container sx={{ height: "100vh" }}>
       {/* Campground Selection Bar */}
-      <Grid container item xs={3} sx={{ backgroundColor: "#2c2f33", overflowY: "auto" }}>
+      <Grid
+        container
+        item
+        sm={3}
+        sx={{
+          backgroundColor: "#2c2f33",
+          overflowY: "auto",
+          display: { xs: "none", sm: "flex" },
+        }}
+      >
         <ChannelSelection socket={socket} />
       </Grid>
 
@@ -17,31 +26,28 @@ export default function Chat({ socket }) {
       <Grid
         container
         item
-        xs={6}
-        sx={{ display: "flex", flexDirection: "column", position: "relative", height: "100vh" }}
+        xs={8}
+        sm={6}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "nowrap",
+          height: "100vh",
+        }}
       >
         {/* Messages List (scrollable) */}
-        <Box sx={{ flexGrow: 1, overflowY: "auto", paddingBottom: "72px" }}>
+        <Grid sx={{ flexGrow: 1, overflowY: "auto" }}>
           <MessageList socket={socket} />
-        </Box>
+        </Grid>
 
-        {/* Fixed Message Input */}
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 0,
-            left: "50%", // Centers it based on the grid
-            transform: "translateX(-50%)", // Adjusts centering
-            width: "50vw", // Adjust width dynamically (change as needed)
-            backgroundColor: "#2C2F33",
-          }}
-        >
+        {/* Message Input */}
+        <Grid sx={{ backgroundColor: "#2C2F33", }}>
           <MessageInput socket={socket} />
-        </Box>
+        </Grid>
       </Grid>
 
       {/* Online Status Bar */}
-      <Grid container item xs={3} sx={{ backgroundColor: "#2c2f33", overflowY: "auto" }}>
+      <Grid container item xs={4} sm={3} sx={{ backgroundColor: "#2c2f33", overflowY: "auto", overflowX: 'hidden', }}>
         <OnlineStatusBar socket={socket} />
       </Grid>
     </Grid>
