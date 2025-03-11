@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
-  Box,
+  Container,
   Button,
   Dialog,
   DialogActions,
@@ -60,7 +60,7 @@ export default function Account() {
   };
 
   return (
-    <Box sx={{ paddingTop: '100px' }}>
+    <Container maxWidth="md" sx={{ paddingTop: '100px' }}>
       <Grid container spacing={3} sx={{ justifyContent: "center" }} >
         <Grid container item xs={12} sx={{ justifyContent: "center" }} >
           <IconButton onClick={handleOpenProfilePictureDialog}>
@@ -147,6 +147,6 @@ export default function Account() {
           </Grid>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Container>
   );
 }

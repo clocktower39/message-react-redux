@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
@@ -73,7 +74,8 @@ export default function OnlineStatusBar({ socket }) {
           console.log(`is online: ${isOnline}`)
           console.log(isOnline)
           return (
-          <ListItem key={user._id}>
+          <ListItem key={user._id} disablePadding>
+            <ListItemButton>
             <ListItemAvatar>
               <Badge
                 color="success"
@@ -96,6 +98,7 @@ export default function OnlineStatusBar({ socket }) {
               primary={user.username}
               sx={{ color: isOnline ? green[500] : grey[400] }}
             />
+            </ListItemButton>
           </ListItem>
         )}
       )}
