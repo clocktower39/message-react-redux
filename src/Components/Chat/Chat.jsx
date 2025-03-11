@@ -36,7 +36,7 @@ export default function Chat({ socket }) {
         }}
       >
         {/* Messages List (scrollable) */}
-        <Grid sx={{ flexGrow: 1, overflowY: "auto" }}>
+        <Grid sx={{ flexGrow: 1, overflowY: "auto", scrollbarWidth: 'thin', }}>
           <MessageList socket={socket} />
         </Grid>
 
