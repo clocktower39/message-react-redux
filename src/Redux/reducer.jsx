@@ -16,6 +16,7 @@ export let reducer = (state = { messages, user }, action) => {
           {
             _id: action.messageId,
             message: action.message,
+            channel: action.channel,
             timeStamp: action.timeStamp,
             user: action.user,
           },

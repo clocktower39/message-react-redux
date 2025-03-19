@@ -8,13 +8,9 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { Groups as GroupsIcon, Grade as GradeIcon } from "@mui/icons-material";
+import { ChatBubble, } from "@mui/icons-material";
 
-export default function ChannelSelection() {
-  const [channels, setChannels] = useState([
-    { _id: 1, title: "General", icon: <GroupsIcon />, authorized: true, },
-    { _id: 2, title: "Premium", icon: <GradeIcon />, authorized: false, },
-  ]);
+export default function ChannelSelection({ socket, channels, activeChannel, handleChannelClick }) {
   return (
     <Box
       sx={{ color: "white", padding: "75px 0 95px 0", backgroundColor: "#23272a", width: "100%" }}
@@ -23,9 +19,9 @@ export default function ChannelSelection() {
       <List>
         {channels.map((channel) => (
           <ListItem key={channel._id} disablePadding>
-            <ListItemButton disabled={!channel.authorized}>
-              <ListItemIcon sx={{ color: "inherit" }}>{channel.icon}</ListItemIcon>
-              <ListItemText primary={channel.title} />
+            <ListItemButton onClick={() => handleChannelClick(channel)}>
+              <ListItemIcon sx={{ color: "inherit" }}><ChatBubble /></ListItemIcon>
+              <ListItemText primary={channel.name} />
             </ListItemButton>
           </ListItem>
         ))}

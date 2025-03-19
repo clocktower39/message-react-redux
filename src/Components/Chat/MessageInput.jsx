@@ -3,7 +3,7 @@ import { Button, Container, TextField, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addMessage, sendMessage } from "../../Redux/actions";
 
-export const MessageInput = ({ socket, }) => {
+export const MessageInput = ({ socket, activeChannel }) => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
@@ -15,19 +15,19 @@ export const MessageInput = ({ socket, }) => {
   };
 
   const handleMessageSubmit = (e) => {
-    if (message !== '') {
-      dispatch(sendMessage(message, socket.id))
-      setMessage('');
+    if (message !== "") {
+      dispatch(sendMessage(message, socket.id, activeChannel));
+      setMessage("");
     }
-  }
+  };
 
   useEffect(() => {
     const handleMessage = (data) => {
-      dispatch(addMessage(data._id, data.message, data.timeStamp, data.user));
+      dispatch(addMessage(data._id, data.message, data.channel, data.timeStamp, data.user));
     };
-  
+
     socket.on("message", handleMessage);
-  
+
     return () => {
       socket.off("message", handleMessage);
     };
@@ -42,7 +42,7 @@ export const MessageInput = ({ socket, }) => {
           alignItems: "center",
           textAlign: "center",
           backgroundColor: "#2C2F33",
-          padding: '12.5px 0px'
+          padding: "12.5px 0px",
         }}
       >
         <Grid item xs={12}>

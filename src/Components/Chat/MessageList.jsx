@@ -11,7 +11,7 @@ import {
 import { Delete, MoreHoriz } from '@mui/icons-material';
 import { updateMessageList, deleteMessage, removeMessage, serverURL } from "../../Redux/actions";
 
-export const MessageList = (props) => {
+export const MessageList = ({ socket, activeChannel, }) => {
   const messages = useSelector(state => state.messages);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export const MessageList = (props) => {
   }, []);
 
   useEffect(() => {
-    props.socket.on("remove_message", (data) => {
+    socket.on("remove_message", (data) => {
       dispatch(removeMessage(data));
     }); // eslint-disable-next-line
   }, []);
@@ -53,8 +53,8 @@ export const MessageList = (props) => {
       <h4 style={{
         textAlign: "center",
         color: "white",
-      }}>Messages:</h4>
-      {messages.map((message, i) => {
+      }}>{activeChannel.name} Messages: </h4>
+      {messages.filter(message => message.channel === activeChannel._id).map((message, i) => {
         return (
           <Grid
             key={message._id || i}

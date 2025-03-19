@@ -13,7 +13,7 @@ import {
 import { green, grey } from "@mui/material/colors";
 import { serverURL } from "../../Redux/actions";
 
-export default function OnlineStatusBar({ socket }) {
+export default function OnlineStatusBar({ socket, activeChannel }) {
   const [users, setUsers] = useState([]);
   const [clientStatuses, setClientStatuses] = useState({});
 
@@ -36,7 +36,7 @@ export default function OnlineStatusBar({ socket }) {
 
     fetchUsers();
   }, []);
-  
+
   useEffect(() => {
     if (socket) {
       // Listen for current client statuses
@@ -69,39 +69,46 @@ export default function OnlineStatusBar({ socket }) {
     >
       <Typography textAlign="center">Users</Typography>
       <List>
-        {users.map((user) => {
-          const isOnline = clientStatuses[user._id] === "online";
-          console.log(`is online: ${isOnline}`)
-          console.log(isOnline)
-          return (
-          <ListItem key={user._id} disablePadding>
-            <ListItemButton>
-            <ListItemAvatar>
-              <Badge
-                color="success"
-                variant="dot"
-                invisible={!isOnline}
-                sx={{
-                  "& .MuiBadge-dot": {
-                    backgroundColor: isOnline ? green[500] : grey[500],
-                  },
-                }}
-              >
-                <Avatar
-                  src={
-                    user.profilePicture ? `${serverURL}/user/image/${user.profilePicture}` : null
-                  }
-                />
-              </Badge>
-            </ListItemAvatar>
-            <ListItemText
-              primary={user.username}
-              sx={{ color: isOnline ? green[500] : grey[400] }}
-            />
-            </ListItemButton>
-          </ListItem>
-        )}
-      )}
+        {users
+          .filter(
+            (user) =>
+              activeChannel.isPublic ||
+              activeChannel?.users?.some((channelUser) => channelUser._id === user._id)
+          )
+          .map((user) => {
+            const isOnline = clientStatuses[user._id] === "online";
+
+            return (
+              <ListItem key={user._id} disablePadding>
+                <ListItemButton>
+                  <ListItemAvatar>
+                    <Badge
+                      color="success"
+                      variant="dot"
+                      invisible={!isOnline}
+                      sx={{
+                        "& .MuiBadge-dot": {
+                          backgroundColor: isOnline ? green[500] : grey[500],
+                        },
+                      }}
+                    >
+                      <Avatar
+                        src={
+                          user.profilePicture
+                            ? `${serverURL}/user/image/${user.profilePicture}`
+                            : null
+                        }
+                      />
+                    </Badge>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={user.username}
+                    sx={{ color: isOnline ? green[500] : grey[400] }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
       </List>
     </Box>
   );
