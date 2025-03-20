@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Delete, MoreHoriz } from '@mui/icons-material';
+import dayjs from 'dayjs';
 import { updateMessageList, deleteMessage, removeMessage, serverURL } from "../../Redux/actions";
 
 export const MessageList = ({ socket, activeChannel, }) => {
@@ -85,28 +86,19 @@ export const MessageList = ({ socket, activeChannel, }) => {
               <Avatar src={message.user.profilePicture ? `${serverURL}/user/image/${message.user.profilePicture}` : null} />
             </Grid>
             <Grid item xs={8}>
-              <Typography variant="h6" display="inline">
+              <Typography variant="body2" display="inline">
                 {message.user.username}{" "}
               </Typography>
               <Typography
-                variant="subtitle1"
+                variant="subtitle2"
                 display="inline"
                 sx={{
-                  fontSize: "16px",
                   opacity: ".33",
                 }}
               >
-                {message.timeStamp == null
-                  ? null
-                  : `${new Date(message.timeStamp)
-                    .toLocaleDateString()
-                    .substr(
-                      0,
-                      new Date(message.timeStamp).toLocaleDateString()
-                        .length - 5
-                    )} ${new Date(message.timeStamp).toLocaleTimeString()}`}
+                {dayjs(message.timeStamp).format("MM/DD/YYYY h:mm:ss A")}
               </Typography>
-              <Typography variant="subtitle1" display="block">
+              <Typography variant="body1" display="block">
                 {message.message}
               </Typography>
             </Grid>
