@@ -36,8 +36,7 @@ export default function Chat({ socket }) {
       {/* Campground Selection Bar */}
       <Grid
         container
-        item
-        sm={3}
+        size={3}
         sx={{
           backgroundColor: "#2c2f33",
           overflowY: "auto",
@@ -54,9 +53,7 @@ export default function Chat({ socket }) {
       {/* Chat Area */}
       <Grid
         container
-        item
-        xs={8}
-        sm={6}
+        size={{ xs: 8, sm: 6, }}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -78,9 +75,7 @@ export default function Chat({ socket }) {
       {/* Online Status Bar */}
       <Grid
         container
-        item
-        xs={4}
-        sm={3}
+        size={{ xs: 4, sm: 3, }}
         sx={{ backgroundColor: "#2c2f33", overflowY: "auto", overflowX: "hidden" }}
       >
         <OnlineStatusBar socket={socket} activeChannel={activeChannel} />

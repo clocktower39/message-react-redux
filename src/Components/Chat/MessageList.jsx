@@ -82,10 +82,10 @@ export const MessageList = ({ socket, activeChannel, }) => {
             }
             container
           >
-            <Grid container item xs={2} sx={{ justifyContent: 'center', }}>
+            <Grid container size={2} sx={{ justifyContent: 'center', }}>
               <Avatar src={message.user.profilePicture ? `${serverURL}/user/image/${message.user.profilePicture}` : null} />
             </Grid>
-            <Grid item xs={8}>
+            <Grid size={8}>
               <Typography variant="body2" display="inline">
                 {message.user.username}{" "}
               </Typography>
@@ -102,7 +102,7 @@ export const MessageList = ({ socket, activeChannel, }) => {
                 {message.message}
               </Typography>
             </Grid>
-            <Grid item xs={2}>
+            <Grid size={2}>
               {message.user.username === user.username ? (
                 <IconButton onClick={() => dispatch(deleteMessage(message))}>
                   <Delete />

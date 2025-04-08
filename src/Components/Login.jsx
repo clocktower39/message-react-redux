@@ -63,7 +63,7 @@ export const Login = (props) => {
     }
     return (
         <Grid container spacing={1} sx={classes.root}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={error === true ? "Please enter your username" : false}
@@ -74,7 +74,7 @@ export const Login = (props) => {
                     onChange={(e) => setUsername(e.target.value)}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={(error === true) ? "Please enter your password" : false}
@@ -89,7 +89,7 @@ export const Login = (props) => {
                     }}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Button
                     variant="contained"
                     color="primary"
@@ -100,7 +100,7 @@ export const Login = (props) => {
                     Login
                 </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Button
                     variant="contained"
                     color="primary"

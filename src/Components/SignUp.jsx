@@ -47,7 +47,7 @@ export const SignUp = (props) => {
 
     return (
         <Grid container spacing={1} sx={classes.root}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={error === true ? "Please enter your username" : false}
@@ -59,7 +59,7 @@ export const SignUp = (props) => {
                 />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={error === true ? "Please enter your first name" : false}
@@ -71,7 +71,7 @@ export const SignUp = (props) => {
                 />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={error === true ? "Please enter your last name" : false}
@@ -83,7 +83,7 @@ export const SignUp = (props) => {
                 />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={error === true ? "Please enter your email" : false}
@@ -94,7 +94,7 @@ export const SignUp = (props) => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={(error === true) ? "Please enter your password" : false}
@@ -109,7 +109,7 @@ export const SignUp = (props) => {
                     }}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <TextField
                     error={error === true ? true : false}
                     helperText={(error === true) ? "Please enter your password" : false}
@@ -124,7 +124,7 @@ export const SignUp = (props) => {
                     }}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Button
                     variant="contained"
                     color="primary"

@@ -45,7 +45,7 @@ export const MessageInput = ({ socket, activeChannel }) => {
           padding: "12.5px 0px",
         }}
       >
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             fullWidth
             error={error === true ? true : false}

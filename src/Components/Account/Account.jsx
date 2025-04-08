@@ -62,13 +62,13 @@ export default function Account() {
   return (
     <Container maxWidth="md" sx={{ paddingTop: '100px' }}>
       <Grid container spacing={3} sx={{ justifyContent: "center" }} >
-        <Grid container item xs={12} sx={{ justifyContent: "center" }} >
+        <Grid container size={12} sx={{ justifyContent: "center" }} >
           <IconButton onClick={handleOpenProfilePictureDialog}>
             <Avatar sx={{ height: "5em", width: "5em", }} src={user.profilePicture ? `${serverURL}/user/image/${user.profilePicture}` : null} />
           </IconButton>
 
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             label="Username"
             variant="outlined"
@@ -77,7 +77,7 @@ export default function Account() {
             onChange={(e) => handleChange(e, setUsername)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             label="First Name"
             variant="outlined"
@@ -86,7 +86,7 @@ export default function Account() {
             onChange={(e) => handleChange(e, setFirstName)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             label="Last Name"
             variant="outlined"
@@ -95,7 +95,7 @@ export default function Account() {
             onChange={(e) => handleChange(e, setLastName)}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TextField
             label="Email"
             variant="outlined"
@@ -104,7 +104,7 @@ export default function Account() {
             onChange={(e) => handleChange(e, setEmail)}
           />
         </Grid>
-        <Grid item container xs={12} sx={{ justifyContent: "center" }} >
+        <Grid container size={12} sx={{ justifyContent: "center" }} >
           <Button
             variant="outlined"
             onClick={handleCancel}
@@ -131,7 +131,7 @@ export default function Account() {
           />
         </DialogContent>
         <DialogActions>
-          <Grid container item sx={{ justifyContent: 'center', }}>
+          <Grid container sx={{ justifyContent: 'center', }}>
             <Button
               variant="outlined"
               onClick={handlePhotoRemove}
