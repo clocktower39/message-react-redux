@@ -10,11 +10,11 @@ export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 export const ERROR = "ERROR";
 
 // dev server
-// const currentIP = window.location.href.split(":")[1];
-// export const serverURL = `http:${currentIP}:8000`;
+const currentIP = window.location.href.split(":")[1];
+export const serverURL = `http:${currentIP}:8100`;
 
 // live server
-export const serverURL = "https://immense-harbor-48108.herokuapp.com";
+// export const serverURL = "https://immense-harbor-48108.herokuapp.com";
 
 export function sendMessage(message, socketId, activeChannel) {
   return async (dispatch, getState) => {

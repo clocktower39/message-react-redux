@@ -13,9 +13,17 @@ import { ChatBubble, } from "@mui/icons-material";
 export default function ChannelSelection({ socket, channels, activeChannel, handleChannelClick }) {
   return (
     <Box
-      sx={{ color: "white", padding: "75px 0 95px 0", backgroundColor: "#23272a", width: "100%" }}
+      sx={{
+        color: "var(--text-0)",
+        padding: "75px 0 95px 0",
+        backgroundColor: "var(--bg-2)",
+        width: "100%",
+        borderRight: "1px solid var(--border)",
+      }}
     >
-      <Typography textAlign="center">Channels</Typography>
+      <Typography textAlign="center" sx={{ color: "var(--text-1)", letterSpacing: "0.6px" }}>
+        Channels
+      </Typography>
       <List>
         {channels.map((channel) => (
           <ListItem key={channel._id} disablePadding>

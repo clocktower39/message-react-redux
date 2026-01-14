@@ -39,7 +39,8 @@ export const Navbar = () => {
   return (
     <AppBar
       sx={{
-        backgroundColor: "#23272a",
+        backgroundColor: "rgba(21, 25, 34, 0.92)",
+        backdropFilter: "blur(12px)",
       }}
     >
       <Toolbar
@@ -53,7 +54,14 @@ export const Navbar = () => {
             component={Link}
             to="/"
             variant="h5"
-            sx={{ display: "flex", textDecoration: "none", color: "#FF5900", fontFamily: 'Poppins', }}
+            sx={{
+              display: "flex",
+              textDecoration: "none",
+              color: "var(--accent)",
+              fontFamily: "Poppins",
+              fontWeight: 700,
+              letterSpacing: "-0.4px",
+            }}
           >
             Campground
             <img
@@ -95,7 +103,7 @@ export const Navbar = () => {
             elevation: 0,
             sx: {
               color: "#fff",
-              bgcolor: "#121212",
+              bgcolor: "var(--bg-1)",
               overflow: "visible",
               filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
@@ -113,7 +121,7 @@ export const Navbar = () => {
                 right: 14,
                 width: 10,
                 height: 10,
-                bgcolor: "#121212",
+                bgcolor: "var(--bg-1)",
                 transform: "translateY(-50%) rotate(45deg)",
                 zIndex: 0,
               },
@@ -128,6 +136,12 @@ export const Navbar = () => {
             src={user.profilePicture ? `${serverURL}/user/image/${user.profilePicture}` : null}
           />{" "}
           My account
+        </MenuItem>
+        <MenuItem component={Link} to="/channels">
+          <ListItemIcon>
+            <Settings fontSize="small" sx={{ color: "#fff" }} />
+          </ListItemIcon>
+          Manage channels
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleLogout}>

@@ -41,8 +41,9 @@ export const MessageInput = ({ socket, activeChannel }) => {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          backgroundColor: "#2C2F33",
-          padding: "12.5px 0px",
+          backgroundColor: "var(--bg-2)",
+          padding: "14px 0px",
+          borderTop: "1px solid var(--border)",
         }}
       >
         <Grid size={12}>

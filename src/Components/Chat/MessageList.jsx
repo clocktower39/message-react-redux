@@ -53,7 +53,8 @@ export const MessageList = ({ socket, activeChannel, }) => {
     }}>
       <h4 style={{
         textAlign: "center",
-        color: "white",
+        color: "var(--text-1)",
+        letterSpacing: "0.6px",
       }}>{activeChannel.name} Messages: </h4>
       {messages.filter(message => message.channel === activeChannel._id).map((message, i) => {
         return (
@@ -67,8 +68,9 @@ export const MessageList = ({ socket, activeChannel, }) => {
                   alignItems: "center",
                   margin: "10px 0px",
                   borderRadius: "7.5px",
-                  backgroundColor: "rgb(21, 101, 192)",
-                  color: "white"
+                  background: "linear-gradient(135deg, rgba(255, 107, 61, 0.75), rgba(255, 138, 74, 0.75))",
+                  color: "var(--text-0)",
+                  boxShadow: "0 10px 18px rgba(255, 107, 61, 0.22)"
                 }
                 : {
                   display: "flex",
@@ -76,8 +78,9 @@ export const MessageList = ({ socket, activeChannel, }) => {
                   alignItems: "center",
                   margin: "10px 0px",
                   borderRadius: "7.5px",
-                  backgroundColor: "#23272A",
-                  color: "white"
+                  backgroundColor: "var(--bg-2)",
+                  color: "var(--text-0)",
+                  border: "1px solid var(--border)"
                 }
             }
             container

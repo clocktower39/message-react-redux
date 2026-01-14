@@ -65,9 +65,17 @@ export default function OnlineStatusBar({ socket, activeChannel }) {
 
   return (
     <Box
-      sx={{ color: "white", padding: "75px 0 95px 0", backgroundColor: "#23272a", width: "100%" }}
+      sx={{
+        color: "var(--text-0)",
+        padding: "75px 0 95px 0",
+        backgroundColor: "var(--bg-2)",
+        width: "100%",
+        borderLeft: "1px solid var(--border)",
+      }}
     >
-      <Typography textAlign="center">Users</Typography>
+      <Typography textAlign="center" sx={{ color: "var(--text-1)", letterSpacing: "0.6px" }}>
+        Users
+      </Typography>
       <List>
         {users
           .filter(

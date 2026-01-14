@@ -38,7 +38,7 @@ export default function Chat({ socket }) {
         container
         size={3}
         sx={{
-          backgroundColor: "#2c2f33",
+          backgroundColor: "var(--bg-2)",
           overflowY: "auto",
           display: { xs: "none", sm: "flex" },
         }}
@@ -59,6 +59,7 @@ export default function Chat({ socket }) {
           flexDirection: "column",
           flexWrap: "nowrap",
           height: "100vh",
+          backgroundColor: "var(--bg-1)",
         }}
       >
         {/* Messages List (scrollable) */}
@@ -67,7 +68,7 @@ export default function Chat({ socket }) {
         </Grid>
 
         {/* Message Input */}
-        <Grid sx={{ backgroundColor: "#2C2F33" }}>
+        <Grid sx={{ backgroundColor: "var(--bg-2)" }}>
           <MessageInput socket={socket} activeChannel={activeChannel} />
         </Grid>
       </Grid>
@@ -76,7 +77,7 @@ export default function Chat({ socket }) {
       <Grid
         container
         size={{ xs: 4, sm: 3, }}
-        sx={{ backgroundColor: "#2c2f33", overflowY: "auto", overflowX: "hidden" }}
+        sx={{ backgroundColor: "var(--bg-2)", overflowY: "auto", overflowX: "hidden" }}
       >
         <OnlineStatusBar socket={socket} activeChannel={activeChannel} />
       </Grid>
