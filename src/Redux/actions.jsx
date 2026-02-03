@@ -6,24 +6,27 @@ export const LOGIN_USER = "LOGIN_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const SIGNUP_USER = "SIGNUP_USER";
 export const UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
+export const PREPEND_MESSAGE_LIST = "PREPEND_MESSAGE_LIST";
+export const RESET_MESSAGE_LIST = "RESET_MESSAGE_LIST";
+export const UPDATE_MESSAGE_REACTIONS = "UPDATE_MESSAGE_REACTIONS";
 export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
 export const ERROR = "ERROR";
 
-// dev server
+// Local dev server derived from the current host.
 const currentIP = window.location.href.split(":")[1];
 export const serverURL = `http:${currentIP}:8100`;
 
 // live server
 // export const serverURL = "https://immense-harbor-48108.herokuapp.com";
 
-export function sendMessage(message, socketId, activeChannel) {
+export function sendMessage(message, activeChannelId) {
   return async (dispatch, getState) => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
 
     const response = await fetch(`${serverURL}/messages`, {
       method: "post",
       dataType: "json",
-      body: JSON.stringify({ message, channel: activeChannel }),
+      body: JSON.stringify({ message, channel: activeChannelId }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
         Authorization: bearer,
@@ -65,12 +68,85 @@ export function updateMessageList() {
 
     return dispatch({
       type: UPDATE_MESSAGE_LIST,
-      messages: [...data],
+      messages: [...(data.messages || data)],
     });
   };
 }
 
-// user requests to delete their message
+export function resetMessageList() {
+  return {
+    type: RESET_MESSAGE_LIST,
+  };
+}
+
+export function fetchMessagePage({ channelId, cursor, limit = 30, mode = "replace" }) {
+  return async (dispatch) => {
+    const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+    const params = new URLSearchParams();
+    if (channelId) {
+      params.set("channelId", channelId);
+    }
+    if (cursor) {
+      params.set("cursor", cursor);
+    }
+    if (limit) {
+      params.set("limit", String(limit));
+    }
+
+    const response = await fetch(`${serverURL}/messages?${params.toString()}`, {
+      headers: {
+        Authorization: bearer,
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      dispatch({
+        type: ERROR,
+        error: data.error,
+      });
+      return data;
+    }
+
+    dispatch({
+      type: mode === "prepend" ? PREPEND_MESSAGE_LIST : UPDATE_MESSAGE_LIST,
+      messages: Array.isArray(data.messages) ? data.messages : [],
+    });
+
+    return data;
+  };
+}
+
+export function reactToMessage(messageId, emoji) {
+  return async (dispatch) => {
+    const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+    const response = await fetch(`${serverURL}/messages/${messageId}/reactions`, {
+      method: "POST",
+      headers: {
+        Authorization: bearer,
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ emoji }),
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      return dispatch({
+        type: ERROR,
+        error: data.error,
+      });
+    }
+
+    return dispatch({
+      type: UPDATE_MESSAGE_REACTIONS,
+      messageId: data.messageId,
+      reactions: data.reactions,
+    });
+  };
+}
+
 export function deleteMessage(messageToDelete) {
   return async (dispatch, getState) => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
@@ -97,7 +173,7 @@ export function deleteMessage(messageToDelete) {
   };
 }
 
-// server io emit removes request deleted message
+// Apply a server-pushed delete to local state.
 export function removeMessage(removedMessageId) {
   return async (dispatch, getState) => {
     const state = getState();
@@ -205,9 +281,9 @@ export const loginJWT = () => {
     const response = await fetch(`${serverURL}/refresh-tokens`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", // Set the content type to JSON
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ refreshToken }), // Send the refresh token in the request body
+      body: JSON.stringify({ refreshToken }),
     });
 
     const data = await response.json();

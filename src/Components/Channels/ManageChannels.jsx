@@ -24,6 +24,7 @@ const emptyForm = {
   isPublic: true,
   users: [],
   admins: [],
+  bannedUsers: [],
 };
 
 const uniqueIds = (ids = []) => [...new Set(ids.filter(Boolean))];
@@ -36,6 +37,8 @@ export default function ManageChannels() {
   const [selectedId, setSelectedId] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [status, setStatus] = useState({ type: "", message: "" });
+  const [moderationTarget, setModerationTarget] = useState(null);
+  const [unbanTarget, setUnbanTarget] = useState(null);
 
   const userLookup = useMemo(
     () => new Map(users.map((user) => [user._id, user])),
@@ -70,6 +73,28 @@ export default function ManageChannels() {
     [form.admins, userLookup]
   );
 
+  const selectedBannedUsers = useMemo(
+    () => form.bannedUsers.map((id) => userLookup.get(id)).filter(Boolean),
+    [form.bannedUsers, userLookup]
+  );
+
+  const selectedChannel = useMemo(
+    () => channels.find((channel) => channel._id === selectedId) || null,
+    [channels, selectedId]
+  );
+
+  const moderationMembers = useMemo(() => {
+    if (!selectedChannel) {
+      return [];
+    }
+    const memberIds = uniqueIds([
+      ...(selectedChannel.users || []).map(normalizeId),
+      ...(selectedChannel.admins || []).map(normalizeId),
+      normalizeId(selectedChannel.createdBy),
+    ]).filter((id) => id !== userId);
+    return memberIds.map((id) => userLookup.get(id)).filter(Boolean);
+  }, [selectedChannel, userId, userLookup]);
+
   const loadUsers = async () => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
     const response = await fetch(`${serverURL}/users`, {
@@ -85,7 +110,9 @@ export default function ManageChannels() {
       headers: { Authorization: bearer },
     });
     const data = await response.json();
-    setChannels(Array.isArray(data) ? data : []);
+    const channelList = Array.isArray(data) ? data : [];
+    setChannels(channelList);
+    return channelList;
   };
 
   useEffect(() => {
@@ -106,6 +133,8 @@ export default function ManageChannels() {
       admins: userId ? [userId] : [],
     });
     setStatus({ type: "", message: "" });
+    setModerationTarget(null);
+    setUnbanTarget(null);
   };
 
   const selectChannel = (channel) => {
@@ -119,8 +148,11 @@ export default function ManageChannels() {
       isPublic: Boolean(channel.isPublic),
       users: channelUsers,
       admins: uniqueIds(channelAdmins),
+      bannedUsers: (channel.bannedUsers || []).map(normalizeId),
     });
     setStatus({ type: "", message: "" });
+    setModerationTarget(null);
+    setUnbanTarget(null);
   };
 
   const handlePublicChange = (event) => {
@@ -200,6 +232,7 @@ export default function ManageChannels() {
       isPublic: Boolean(saved.isPublic),
       users: (saved.users || []).map(normalizeId),
       admins: (saved.admins || []).map(normalizeId),
+      bannedUsers: (saved.bannedUsers || []).map(normalizeId),
     });
     setStatus({
       type: "success",
@@ -234,6 +267,101 @@ export default function ManageChannels() {
     await loadChannels();
     resetForm();
     setStatus({ type: "success", message: "Channel deleted." });
+  };
+
+  const syncSelectedChannel = (channelList) => {
+    if (!selectedId) {
+      return;
+    }
+    const updated = channelList.find((channel) => channel._id === selectedId);
+    if (updated) {
+      setForm({
+        name: updated.name || "",
+        description: updated.description || "",
+        isPublic: Boolean(updated.isPublic),
+        users: (updated.users || []).map(normalizeId),
+        admins: (updated.admins || []).map(normalizeId),
+        bannedUsers: (updated.bannedUsers || []).map(normalizeId),
+      });
+    }
+  };
+
+  const handleModeration = async (action) => {
+    if (!selectedId || !moderationTarget) {
+      return;
+    }
+
+    const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+    const response = await fetch(`${serverURL}/api/channels/${selectedId}/${action}`, {
+      method: "POST",
+      headers: {
+        Authorization: bearer,
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ userId: moderationTarget._id }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      setStatus({
+        type: "error",
+        message: error.error || `Failed to ${action} user.`,
+      });
+      return;
+    }
+
+    const updated = await response.json();
+    setStatus({
+      type: "success",
+      message: action === "ban" ? "User banned." : "User kicked.",
+    });
+    setModerationTarget(null);
+    setForm((prev) => ({
+      ...prev,
+      users: (updated.users || []).map(normalizeId),
+      admins: (updated.admins || []).map(normalizeId),
+      bannedUsers: (updated.bannedUsers || []).map(normalizeId),
+    }));
+    const channelList = await loadChannels();
+    syncSelectedChannel(channelList);
+  };
+
+  const handleUnban = async () => {
+    if (!selectedId || !unbanTarget) {
+      return;
+    }
+
+    const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+    const response = await fetch(`${serverURL}/api/channels/${selectedId}/unban`, {
+      method: "POST",
+      headers: {
+        Authorization: bearer,
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify({ userId: unbanTarget._id }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      setStatus({
+        type: "error",
+        message: error.error || "Failed to unban user.",
+      });
+      return;
+    }
+
+    const updated = await response.json();
+    setStatus({
+      type: "success",
+      message: "User unbanned.",
+    });
+    setUnbanTarget(null);
+    setForm((prev) => ({
+      ...prev,
+      bannedUsers: (updated.bannedUsers || []).map(normalizeId),
+    }));
+    const channelList = await loadChannels();
+    syncSelectedChannel(channelList);
   };
 
   return (
@@ -397,6 +525,68 @@ export default function ManageChannels() {
                 )}
               </Box>
             </Box>
+
+            {selectedId && canManageSelected && (
+              <Box sx={{ marginTop: 4 }}>
+                <Divider sx={{ my: 2, borderColor: "var(--border)" }} />
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  Moderation
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Autocomplete
+                      options={moderationMembers}
+                      getOptionLabel={(option) => option.username || ""}
+                      value={moderationTarget}
+                      onChange={(event, value) => setModerationTarget(value)}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Select user" placeholder="User to moderate" />
+                      )}
+                      isOptionEqualToValue={(option, value) => option._id === value._id}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6} sx={{ display: "flex", gap: 2 }}>
+                    <Button
+                      variant="outlined"
+                      color="warning"
+                      disabled={!moderationTarget}
+                      onClick={() => handleModeration("kick")}
+                    >
+                      Kick
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      disabled={!moderationTarget}
+                      onClick={() => handleModeration("ban")}
+                    >
+                      Ban
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Autocomplete
+                      options={selectedBannedUsers}
+                      getOptionLabel={(option) => option.username || ""}
+                      value={unbanTarget}
+                      onChange={(event, value) => setUnbanTarget(value)}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Banned users" placeholder="Select user" />
+                      )}
+                      isOptionEqualToValue={(option, value) => option._id === value._id}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Button
+                      variant="outlined"
+                      disabled={!unbanTarget}
+                      onClick={handleUnban}
+                    >
+                      Unban
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
           </Paper>
         </Grid>
       </Grid>
