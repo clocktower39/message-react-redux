@@ -143,6 +143,12 @@ export const Navbar = () => {
           </ListItemIcon>
           Manage channels
         </MenuItem>
+        <MenuItem component={Link} to="/friends">
+          <ListItemIcon>
+            <Settings fontSize="small" sx={{ color: "#fff" }} />
+          </ListItemIcon>
+          Friends
+        </MenuItem>
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

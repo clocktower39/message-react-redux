@@ -95,6 +95,15 @@ export default function ManageChannels() {
     return memberIds.map((id) => userLookup.get(id)).filter(Boolean);
   }, [selectedChannel, userId, userLookup]);
 
+  const isSelectedDm = Boolean(selectedChannel?.isDM);
+  const isDmParticipant = Boolean(
+    selectedChannel?.isDM &&
+      (selectedChannel.users || []).some((member) => normalizeId(member) === userId)
+  );
+
+  const canEditSelected = !isSelectedDm && (canManageSelected || !selectedId);
+  const canDeleteSelected = isSelectedDm ? isDmParticipant : canManageSelected;
+
   const loadUsers = async () => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
     const response = await fetch(`${serverURL}/users`, {
@@ -388,6 +397,12 @@ export default function ManageChannels() {
                 const isManageable = manageableChannels.some(
                   (manageable) => manageable._id === channel._id
                 );
+                const dmNames = channel.isDM
+                  ? (channel.users || [])
+                      .map((member) => member.username || "")
+                      .filter(Boolean)
+                      .join(", ")
+                  : "";
                 return (
                 <ListItemButton
                   key={channel._id}
@@ -395,9 +410,15 @@ export default function ManageChannels() {
                   onClick={() => selectChannel(channel)}
                 >
                   <ListItemText
-                    primary={channel.name}
+                    primary={channel.isDM ? `DM: ${dmNames || "Direct Message"}` : channel.name}
                     secondary={
-                      channel.isPublic ? "Public" : isManageable ? "Private (manager)" : "Private"
+                      channel.isDM
+                        ? "Direct message"
+                        : channel.isPublic
+                        ? "Public"
+                        : isManageable
+                        ? "Private (manager)"
+                        : "Private"
                     }
                   />
                 </ListItemButton>
@@ -423,9 +444,14 @@ export default function ManageChannels() {
                 {status.message}
               </Alert>
             )}
-            {!canManageSelected && selectedId && (
+            {!canManageSelected && selectedId && !isSelectedDm && (
               <Alert severity="info" sx={{ mb: 2 }}>
                 You can view this channel, but only its creator or admins can edit it.
+              </Alert>
+            )}
+            {isSelectedDm && (
+              <Alert severity="info" sx={{ mb: 2 }}>
+                Direct messages can be deleted but not edited.
               </Alert>
             )}
 
@@ -435,7 +461,7 @@ export default function ManageChannels() {
                 variant="outlined"
                 fullWidth
                 required
-                disabled={!canManageSelected && Boolean(selectedId)}
+                disabled={!canEditSelected}
                 value={form.name}
                 onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
                 sx={{ mb: 2 }}
@@ -444,7 +470,7 @@ export default function ManageChannels() {
                 label="Description"
                 variant="outlined"
                 fullWidth
-                disabled={!canManageSelected && Boolean(selectedId)}
+                disabled={!canEditSelected}
                 value={form.description}
                 onChange={(event) =>
                   setForm((prev) => ({ ...prev, description: event.target.value }))
@@ -457,7 +483,7 @@ export default function ManageChannels() {
                   <Switch
                     checked={form.isPublic}
                     onChange={handlePublicChange}
-                    disabled={!canManageSelected && Boolean(selectedId)}
+                    disabled={!canEditSelected}
                   />
                 }
                 label={form.isPublic ? "Public channel" : "Private channel"}
@@ -475,7 +501,7 @@ export default function ManageChannels() {
                     {...params}
                     label="Members"
                     placeholder="Select users"
-                    disabled={!canManageSelected && Boolean(selectedId)}
+                    disabled={!canEditSelected}
                     helperText={
                       form.isPublic
                         ? "Optional for public channels."
@@ -498,7 +524,7 @@ export default function ManageChannels() {
                     {...params}
                     label="Admins"
                     placeholder="Select admins"
-                    disabled={!canManageSelected && Boolean(selectedId)}
+                    disabled={!canEditSelected}
                   />
                 )}
                 sx={{ mb: 3 }}
@@ -509,7 +535,7 @@ export default function ManageChannels() {
                 <Button
                   type="submit"
                   variant="contained"
-                  disabled={!canManageSelected && Boolean(selectedId)}
+                  disabled={!canEditSelected}
                 >
                   {selectedId ? "Save changes" : "Create channel"}
                 </Button>
@@ -518,7 +544,7 @@ export default function ManageChannels() {
                     variant="outlined"
                     color="error"
                     onClick={handleDelete}
-                    disabled={!canManageSelected}
+                    disabled={!canDeleteSelected}
                   >
                     Delete channel
                   </Button>
@@ -526,7 +552,7 @@ export default function ManageChannels() {
               </Box>
             </Box>
 
-            {selectedId && canManageSelected && (
+            {selectedId && canManageSelected && !isSelectedDm && (
               <Box sx={{ marginTop: 4 }}>
                 <Divider sx={{ my: 2, borderColor: "var(--border)" }} />
                 <Typography variant="h6" sx={{ mb: 2 }}>

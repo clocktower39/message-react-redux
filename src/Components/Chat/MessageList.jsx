@@ -22,7 +22,15 @@ import {
 const PAGE_SIZE = 30;
 const REACTION_OPTIONS = ["👍", "🔥", "😂", "🎉", "😄"];
 
-export const MessageList = ({ socket, activeChannel, scrollContainerRef, typingUsers = [] }) => {
+export const MessageList = ({
+  socket,
+  activeChannel,
+  scrollContainerRef,
+  typingUsers = [],
+  onMarkRead,
+  readStatus = {},
+  currentUserId,
+}) => {
   const messages = useSelector(state => state.messages);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -30,9 +38,11 @@ export const MessageList = ({ socket, activeChannel, scrollContainerRef, typingU
   const topSentinelRef = useRef(null);
   const isPrependingRef = useRef(false);
   const isAtBottomRef = useRef(true);
+  const lastReadSentRef = useRef(0);
   const [cursor, setCursor] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const READ_THROTTLE_MS = 3000;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -46,6 +56,51 @@ export const MessageList = ({ socket, activeChannel, scrollContainerRef, typingU
       scrollToBottom();
     }
   }, [messages]);
+
+  useEffect(() => {
+    lastReadSentRef.current = 0;
+  }, [activeChannel?._id]);
+
+  const getLatestMessageTimestamp = () => {
+    if (!messages.length) {
+      return null;
+    }
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage?.timeStamp) {
+      return null;
+    }
+    const parsed = new Date(lastMessage.timeStamp).getTime();
+    return Number.isNaN(parsed) ? null : parsed;
+  };
+
+  const shouldMarkRead = () => {
+    if (!currentUserId) {
+      return false;
+    }
+    const latestTimestamp = getLatestMessageTimestamp();
+    if (!latestTimestamp) {
+      return false;
+    }
+    const lastReadAt = readStatus?.[currentUserId];
+    if (!lastReadAt) {
+      return true;
+    }
+    const lastReadTimestamp = new Date(lastReadAt).getTime();
+    if (Number.isNaN(lastReadTimestamp)) {
+      return true;
+    }
+    return latestTimestamp > lastReadTimestamp;
+  };
+
+  useEffect(() => {
+    if (isAtBottomRef.current && onMarkRead && shouldMarkRead()) {
+      const now = Date.now();
+      if (now - lastReadSentRef.current > READ_THROTTLE_MS) {
+        lastReadSentRef.current = now;
+        onMarkRead();
+      }
+    }
+  }, [messages, onMarkRead]);
 
   useEffect(() => {
     if (!activeChannel?._id) {
@@ -118,6 +173,13 @@ export const MessageList = ({ socket, activeChannel, scrollContainerRef, typingU
       const atBottom =
         container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
       isAtBottomRef.current = atBottom;
+      if (atBottom && onMarkRead && shouldMarkRead()) {
+        const now = Date.now();
+        if (now - lastReadSentRef.current > READ_THROTTLE_MS) {
+          lastReadSentRef.current = now;
+          onMarkRead();
+        }
+      }
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -193,6 +255,11 @@ export const MessageList = ({ socket, activeChannel, scrollContainerRef, typingU
     }
     return (match.users || []).some((id) => id.toString() === user._id);
   };
+
+  const otherDmUser = activeChannel?.isDM
+    ? (activeChannel.users || []).find((member) => member._id !== currentUserId)
+    : null;
+  const lastReadAt = otherDmUser ? readStatus[otherDmUser._id] : null;
 
   return (
     <div style={{
@@ -300,6 +367,11 @@ export const MessageList = ({ socket, activeChannel, scrollContainerRef, typingU
           </Grid>
         );
       })}
+      {otherDmUser && lastReadAt && (
+        <Typography variant="caption" sx={{ color: "var(--text-2)", padding: "4px 8px" }}>
+          Last read by {otherDmUser.username} at {dayjs(lastReadAt).format("MM/DD/YYYY h:mm A")}
+        </Typography>
+      )}
       {typingUsers.length > 0 && (
         <Typography variant="caption" sx={{ color: "var(--text-2)", padding: "4px 8px" }}>
           {typingUsers.map((typingUser) => typingUser.username).join(", ")}{" "}

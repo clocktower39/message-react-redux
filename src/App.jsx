@@ -6,6 +6,7 @@ import SignUp from "./Components/SignUp";
 import Chat from "./Components/Chat/Chat";
 import Account from "./Components/Account/Account";
 import ManageChannels from "./Components/Channels/ManageChannels";
+import Friends from "./Components/Friends";
 import AuthRoute from "./Components/AuthRoute";
 import NotFoundPage from "./Components/NotFoundPage";
 import socketIOClient from "socket.io-client";
@@ -23,7 +24,7 @@ function App() {
   useEffect(() => {
     if (userId) {
       const newSocket = socketIOClient(serverURL, {
-        query: { userId },
+        auth: { token: localStorage.getItem("JWT_AUTH_TOKEN") },
         transports: ["websocket"],
         upgrade: false,
       });
@@ -49,6 +50,9 @@ function App() {
           </Route>
           <Route exact path="/channels" element={<AuthRoute />}>
             <Route exact path="/channels" element={<ManageChannels />} />
+          </Route>
+          <Route exact path="/friends" element={<AuthRoute />}>
+            <Route exact path="/friends" element={<Friends />} />
           </Route>
 
           <Route exact path="/*" element={<NotFoundPage />} />

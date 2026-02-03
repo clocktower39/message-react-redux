@@ -3,15 +3,18 @@ import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import OnlineStatusBar from "./OnlineStatusBar";
 import ChannelSelection from "./ChannelSelection";
-import { Grid, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import { serverURL } from "../../Redux/actions";
+import { useSelector } from "react-redux";
 
 export default function Chat({ socket }) {
+  const currentUserId = useSelector((state) => state.user._id);
   const [channels, setChannels] = useState([]);
   const [activeChannel, setActiveChannel] = useState(null);
   const [typingUsers, setTypingUsers] = useState([]);
   const typingTimeoutsRef = useRef(new Map());
   const messagesContainerRef = useRef(null);
+  const [readStatus, setReadStatus] = useState({});
 
   const loadChannels = useCallback(async () => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
@@ -41,6 +44,49 @@ export default function Chat({ socket }) {
   const handleChannelClick = (channel) => {
     setActiveChannel(channel);
   };
+
+  const handleDmCreated = (channel) => {
+    setChannels((prev) => {
+      if (prev.some((existing) => existing._id === channel._id)) {
+        return prev;
+      }
+      return [...prev, channel];
+    });
+    setActiveChannel(channel);
+  };
+
+  const fetchReadStatus = useCallback(async (channelId) => {
+    const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+    const response = await fetch(`${serverURL}/api/channels/${channelId}/read-status`, {
+      headers: { Authorization: bearer },
+    });
+    const data = await response.json();
+    if (!data || !Array.isArray(data.reads)) {
+      return;
+    }
+    setReadStatus((prev) => {
+      const next = { ...prev };
+      data.reads.forEach((entry) => {
+        next[entry.userId] = entry.lastReadAt;
+      });
+      return next;
+    });
+  }, []);
+
+  const markChannelRead = useCallback(async (channelId) => {
+    if (!channelId) {
+      return;
+    }
+    const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
+    const response = await fetch(`${serverURL}/api/channels/${channelId}/read`, {
+      method: "POST",
+      headers: { Authorization: bearer },
+    });
+    const data = await response.json();
+    if (data?.userId && data?.lastReadAt) {
+      setReadStatus((prev) => ({ ...prev, [data.userId]: data.lastReadAt }));
+    }
+  }, []);
 
   useEffect(() => {
     if (!socket || !activeChannel?._id) {
@@ -104,24 +150,37 @@ export default function Chat({ socket }) {
       loadChannels();
     };
 
+    const handleReadReceipt = ({ channelId, userId, lastReadAt }) => {
+      if (!activeChannel?._id || channelId !== activeChannel._id) {
+        return;
+      }
+      setReadStatus((prev) => ({ ...prev, [userId]: lastReadAt }));
+    };
+
     socket.on("typing", handleTyping);
     socket.on("stop_typing", handleStopTyping);
     socket.on("channel_kicked", handleKicked);
     socket.on("channel_banned", handleKicked);
+    socket.on("read_receipt", handleReadReceipt);
 
     return () => {
       socket.off("typing", handleTyping);
       socket.off("stop_typing", handleStopTyping);
       socket.off("channel_kicked", handleKicked);
       socket.off("channel_banned", handleKicked);
+      socket.off("read_receipt", handleReadReceipt);
     };
-  }, [socket, activeChannel?._id]);
+  }, [socket, activeChannel?._id, loadChannels]);
 
   useEffect(() => {
     typingTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout));
     typingTimeoutsRef.current.clear();
     setTypingUsers([]);
-  }, [activeChannel?._id]);
+    if (activeChannel?._id) {
+      fetchReadStatus(activeChannel._id);
+      markChannelRead(activeChannel._id);
+    }
+  }, [activeChannel?._id, fetchReadStatus, markChannelRead]);
 
   return activeChannel ? (
     <Grid container sx={{ height: "100vh" }}>
@@ -136,9 +195,10 @@ export default function Chat({ socket }) {
         }}
       >
         <ChannelSelection
-          socket={socket}
           channels={channels}
+          currentUserId={currentUserId}
           handleChannelClick={handleChannelClick}
+          onDmCreated={handleDmCreated}
         />
       </Grid>
 
@@ -164,6 +224,9 @@ export default function Chat({ socket }) {
             activeChannel={activeChannel}
             scrollContainerRef={messagesContainerRef}
             typingUsers={typingUsers}
+            onMarkRead={() => markChannelRead(activeChannel?._id)}
+            readStatus={readStatus}
+            currentUserId={currentUserId}
           />
         </Grid>
 

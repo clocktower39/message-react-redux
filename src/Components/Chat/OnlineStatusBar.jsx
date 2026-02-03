@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { green, grey } from "@mui/material/colors";
+import dayjs from "dayjs";
 import { serverURL } from "../../Redux/actions";
 
 export default function OnlineStatusBar({ socket, activeChannel }) {
@@ -45,11 +46,18 @@ export default function OnlineStatusBar({ socket, activeChannel }) {
       });
 
       // Listen for individual client status changes
-      socket.on("clientStatusChanged", ({ userId, status }) => {
+      socket.on("clientStatusChanged", ({ userId, status, lastSeenAt }) => {
         setClientStatuses((prevStatuses) => ({
           ...prevStatuses,
           [userId]: status,
         }));
+        if (status === "offline" && lastSeenAt) {
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user._id === userId ? { ...user, lastSeenAt } : user
+            )
+          );
+        }
       });
 
       // Request current online statuses from the server
@@ -85,6 +93,9 @@ export default function OnlineStatusBar({ socket, activeChannel }) {
           )
           .map((user) => {
             const isOnline = clientStatuses[user._id] === "online";
+            const lastSeen = user.lastSeenAt
+              ? `Last seen ${dayjs(user.lastSeenAt).format("MM/DD/YYYY h:mm A")}`
+              : "Offline";
 
             return (
               <ListItem key={user._id} disablePadding>
@@ -111,6 +122,7 @@ export default function OnlineStatusBar({ socket, activeChannel }) {
                   </ListItemAvatar>
                   <ListItemText
                     primary={user.username}
+                    secondary={isOnline ? "Online" : lastSeen}
                     sx={{ color: isOnline ? green[500] : grey[400] }}
                   />
                 </ListItemButton>
