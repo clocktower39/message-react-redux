@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { ChatBubble } from "@mui/icons-material";
 import { serverURL } from "../../Redux/actions";
+import { Link } from "react-router-dom";
 
 export default function ChannelSelection({
   channels,
@@ -79,22 +80,6 @@ export default function ChannelSelection({
         borderRight: "1px solid var(--border)",
       }}
     >
-      <Typography textAlign="center" sx={{ color: "var(--text-1)", letterSpacing: "0.6px" }}>
-        Channels
-      </Typography>
-      <List>
-        {channelList.map((channel) => (
-          <ListItem key={channel._id} disablePadding>
-            <ListItemButton onClick={() => handleChannelClick(channel)}>
-              <ListItemIcon sx={{ color: "inherit" }}>
-                <ChatBubble />
-              </ListItemIcon>
-              <ListItemText primary={channel.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider sx={{ borderColor: "var(--border)", my: 1 }} />
       <Box sx={{ display: "flex", justifyContent: "space-between", px: 2, pb: 1 }}>
         <Typography sx={{ color: "var(--text-1)", letterSpacing: "0.6px" }}>
           Direct Messages
@@ -104,6 +89,14 @@ export default function ChannelSelection({
         </Button>
       </Box>
       <List>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/friends">
+            <ListItemIcon sx={{ color: "inherit" }}>
+              <ChatBubble />
+            </ListItemIcon>
+            <ListItemText primary="Friends" />
+          </ListItemButton>
+        </ListItem>
         {dmList.map((channel) => {
           const names = (channel.users || [])
             .filter((user) => user._id !== currentUserId)
@@ -120,6 +113,22 @@ export default function ChannelSelection({
             </ListItem>
           );
         })}
+      </List>
+      <Divider sx={{ borderColor: "var(--border)", my: 1 }} />
+      <Typography textAlign="center" sx={{ color: "var(--text-1)", letterSpacing: "0.6px" }}>
+        Channels
+      </Typography>
+      <List>
+        {channelList.map((channel) => (
+          <ListItem key={channel._id} disablePadding>
+            <ListItemButton onClick={() => handleChannelClick(channel)}>
+              <ListItemIcon sx={{ color: "inherit" }}>
+                <ChatBubble />
+              </ListItemIcon>
+              <ListItemText primary={channel.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
 
       <Dialog open={dmOpen} onClose={() => setDmOpen(false)} fullWidth maxWidth="xs">
