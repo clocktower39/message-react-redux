@@ -4,11 +4,11 @@ import {
   Box,
   Button,
   Divider,
-  Grid,
   List,
   ListItem,
   ListItemText,
   Paper,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -36,6 +36,25 @@ export default function Friends() {
         !outgoingIds.has(user._id)
     );
   }, [users, friends, incoming, outgoing, currentUserId]);
+
+  const getUserId = (user) => (typeof user === "string" ? user : user?._id);
+
+  const getUserLabel = (user) => {
+    if (!user) {
+      return "Unknown user";
+    }
+    if (typeof user === "string") {
+      const match = users.find((entry) => entry._id === user);
+      return match?.username || match?.email || match?._id || user;
+    }
+    return (
+      user.username ||
+      [user.firstName, user.lastName].filter(Boolean).join(" ") ||
+      user.email ||
+      user._id ||
+      "Unknown user"
+    );
+  };
 
   const loadFriends = async () => {
     const bearer = `Bearer ${localStorage.getItem("JWT_AUTH_TOKEN")}`;
@@ -150,98 +169,104 @@ export default function Friends() {
         Manage your friend list and requests.
       </Typography>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ padding: 2, backgroundColor: "var(--bg-2)", color: "var(--text-0)" }}>
-            <Typography variant="h6">Add Friend</Typography>
-            <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
-            <Autocomplete
-              options={availableUsers}
-              getOptionLabel={(option) => option.username || ""}
-              value={selectedUser}
-              onChange={(event, value) => setSelectedUser(value)}
-              renderInput={(params) => (
-                <TextField {...params} label="User" placeholder="Select a user" />
-              )}
-              isOptionEqualToValue={(option, value) => option._id === value._id}
-              sx={{ mb: 2 }}
-            />
-            <Button variant="contained" onClick={sendRequest} disabled={!selectedUser}>
-              Send Request
-            </Button>
-            {status && (
-              <Typography sx={{ marginTop: 2, color: "var(--text-2)" }}>{status}</Typography>
+      <Stack spacing={3}>
+        <Paper sx={{ padding: 2, backgroundColor: "var(--bg-2)", color: "var(--text-0)" }}>
+          <Typography variant="h6">Add Friend</Typography>
+          <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
+          <Autocomplete
+            options={availableUsers}
+            getOptionLabel={(option) => option.username || ""}
+            value={selectedUser}
+            onChange={(event, value) => setSelectedUser(value)}
+            renderInput={(params) => (
+              <TextField {...params} label="User" placeholder="Select a user" />
             )}
-          </Paper>
-        </Grid>
+            isOptionEqualToValue={(option, value) => option._id === value._id}
+            sx={{ mb: 2 }}
+          />
+          <Button variant="contained" onClick={sendRequest} disabled={!selectedUser}>
+            Send Request
+          </Button>
+          {status && (
+            <Typography sx={{ marginTop: 2, color: "var(--text-2)" }}>{status}</Typography>
+          )}
+        </Paper>
 
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ padding: 2, backgroundColor: "var(--bg-1)", color: "var(--text-0)" }}>
-            <Typography variant="h6">Friend Requests</Typography>
-            <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
-            <List>
-              {incoming.map((user) => (
-                <ListItem key={user._id} secondaryAction={
-                  <Box sx={{ display: "flex", gap: 1 }}>
-                    <Button size="small" variant="contained" onClick={() => acceptRequest(user._id)}>
-                      Accept
-                    </Button>
-                    <Button size="small" variant="outlined" onClick={() => declineRequest(user._id)}>
-                      Decline
-                    </Button>
-                  </Box>
-                }>
-                  <ListItemText primary={user.username} />
+        <Paper sx={{ padding: 2, backgroundColor: "var(--bg-1)", color: "var(--text-0)" }}>
+          <Typography variant="h6">Friend Requests</Typography>
+          <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
+          <List>
+            {incoming.map((user) => {
+              const userId = getUserId(user);
+              return (
+              <ListItem key={userId} secondaryAction={
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button size="small" variant="contained" onClick={() => acceptRequest(userId)}>
+                    Accept
+                  </Button>
+                  <Button size="small" variant="outlined" onClick={() => declineRequest(userId)}>
+                    Decline
+                  </Button>
+                </Box>
+              }>
+                <ListItemText primary={getUserLabel(user)} />
+              </ListItem>
+            )})}
+            {incoming.length === 0 && (
+              <ListItem>
+                <ListItemText primary="No incoming requests." />
+              </ListItem>
+            )}
+          </List>
+        </Paper>
+
+        <Paper sx={{ padding: 2, backgroundColor: "var(--bg-1)", color: "var(--text-0)" }}>
+          <Typography variant="h6">Outgoing Requests</Typography>
+          <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
+          <List>
+            {outgoing.map((user) => {
+              const userId = getUserId(user);
+              return (
+                <ListItem key={userId}>
+                  <ListItemText primary={getUserLabel(user)} secondary="Pending" />
                 </ListItem>
-              ))}
-              {incoming.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="No incoming requests." />
-                </ListItem>
-              )}
-            </List>
+              );
+            })}
+            {outgoing.length === 0 && (
+              <ListItem>
+                <ListItemText primary="No outgoing requests." />
+              </ListItem>
+            )}
+          </List>
+        </Paper>
 
-            <Divider sx={{ my: 2, borderColor: "var(--border)" }} />
-
-            <Typography variant="h6">Outgoing Requests</Typography>
-            <List>
-              {outgoing.map((user) => (
-                <ListItem key={user._id}>
-                  <ListItemText primary={user.username} secondary="Pending" />
-                </ListItem>
-              ))}
-              {outgoing.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="No outgoing requests." />
-                </ListItem>
-              )}
-            </List>
-
-            <Divider sx={{ my: 2, borderColor: "var(--border)" }} />
-
-            <Typography variant="h6">Friends</Typography>
-            <List>
-              {friends.map((user) => (
+        <Paper sx={{ padding: 2, backgroundColor: "var(--bg-1)", color: "var(--text-0)" }}>
+          <Typography variant="h6">Friends</Typography>
+          <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
+          <List>
+            {friends.map((user) => {
+              const userId = getUserId(user);
+              return (
                 <ListItem
-                  key={user._id}
+                  key={userId}
                   secondaryAction={
-                    <Button size="small" variant="outlined" onClick={() => removeFriend(user._id)}>
+                    <Button size="small" variant="outlined" onClick={() => removeFriend(userId)}>
                       Remove
                     </Button>
                   }
                 >
-                  <ListItemText primary={user.username} />
+                  <ListItemText primary={getUserLabel(user)} />
                 </ListItem>
-              ))}
-              {friends.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="No friends yet." />
-                </ListItem>
-              )}
-            </List>
-          </Paper>
-        </Grid>
-      </Grid>
+              );
+            })}
+            {friends.length === 0 && (
+              <ListItem>
+                <ListItemText primary="No friends yet." />
+              </ListItem>
+            )}
+          </List>
+        </Paper>
+      </Stack>
     </Box>
   );
 }

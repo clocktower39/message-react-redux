@@ -6,11 +6,11 @@ import {
   Button,
   Divider,
   FormControlLabel,
-  Grid,
   List,
   ListItemButton,
   ListItemText,
   Paper,
+  Stack,
   Switch,
   TextField,
   Typography,
@@ -382,240 +382,232 @@ export default function ManageChannels() {
         Create, rename, or remove channels and manage access.
       </Typography>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ padding: 2, backgroundColor: "var(--bg-2)", color: "var(--text-0)" }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant="h6">Channels</Typography>
-              <Button variant="outlined" size="small" onClick={resetForm}>
-                New
-              </Button>
-            </Box>
-            <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
-            <List>
-              {channels.map((channel) => {
-                const isManageable = manageableChannels.some(
-                  (manageable) => manageable._id === channel._id
-                );
-                const dmNames = channel.isDM
-                  ? (channel.users || [])
-                      .map((member) => member.username || "")
-                      .filter(Boolean)
-                      .join(", ")
-                  : "";
-                return (
-                <ListItemButton
-                  key={channel._id}
-                  selected={channel._id === selectedId}
-                  onClick={() => selectChannel(channel)}
-                >
-                  <ListItemText
-                    primary={channel.isDM ? `DM: ${dmNames || "Direct Message"}` : channel.name}
-                    secondary={
-                      channel.isDM
-                        ? "Direct message"
-                        : channel.isPublic
-                        ? "Public"
-                        : isManageable
-                        ? "Private (manager)"
-                        : "Private"
-                    }
-                  />
-                </ListItemButton>
-                );
-              })}
-              {channels.length === 0 && (
-                <Typography sx={{ padding: 2, color: "var(--text-2)" }}>
-                  No channels available yet.
-                </Typography>
-              )}
-            </List>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ padding: 3, backgroundColor: "var(--bg-1)", color: "var(--text-0)" }}>
-            <Typography variant="h6" sx={{ marginBottom: 2 }}>
-              {selectedId ? "Edit channel" : "Create a new channel"}
-            </Typography>
-
-            {status.message && (
-              <Alert severity={status.type} sx={{ mb: 2 }}>
-                {status.message}
-              </Alert>
+      <Stack spacing={3}>
+        <Paper sx={{ padding: 2, backgroundColor: "var(--bg-2)", color: "var(--text-0)" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Typography variant="h6">Channels</Typography>
+            <Button variant="outlined" size="small" onClick={resetForm}>
+              New
+            </Button>
+          </Box>
+          <Divider sx={{ my: 1, borderColor: "var(--border)" }} />
+          <List>
+            {channels.map((channel) => {
+              const isManageable = manageableChannels.some(
+                (manageable) => manageable._id === channel._id
+              );
+              const dmNames = channel.isDM
+                ? (channel.users || [])
+                    .map((member) => member.username || "")
+                    .filter(Boolean)
+                    .join(", ")
+                : "";
+              return (
+              <ListItemButton
+                key={channel._id}
+                selected={channel._id === selectedId}
+                onClick={() => selectChannel(channel)}
+              >
+                <ListItemText
+                  primary={channel.isDM ? `DM: ${dmNames || "Direct Message"}` : channel.name}
+                  secondary={
+                    channel.isDM
+                      ? "Direct message"
+                      : channel.isPublic
+                      ? "Public"
+                      : isManageable
+                      ? "Private (manager)"
+                      : "Private"
+                  }
+                />
+              </ListItemButton>
+              );
+            })}
+            {channels.length === 0 && (
+              <Typography sx={{ padding: 2, color: "var(--text-2)" }}>
+                No channels available yet.
+              </Typography>
             )}
-            {!canManageSelected && selectedId && !isSelectedDm && (
-              <Alert severity="info" sx={{ mb: 2 }}>
-                You can view this channel, but only its creator or admins can edit it.
-              </Alert>
-            )}
-            {isSelectedDm && (
-              <Alert severity="info" sx={{ mb: 2 }}>
-                Direct messages can be deleted but not edited.
-              </Alert>
-            )}
+          </List>
+        </Paper>
 
-            <Box component="form" onSubmit={handleSubmit}>
-              <TextField
-                label="Channel name"
-                variant="outlined"
-                fullWidth
-                required
-                disabled={!canEditSelected}
-                value={form.name}
-                onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                label="Description"
-                variant="outlined"
-                fullWidth
-                disabled={!canEditSelected}
-                value={form.description}
-                onChange={(event) =>
-                  setForm((prev) => ({ ...prev, description: event.target.value }))
-                }
-                sx={{ mb: 2 }}
-              />
+        <Paper sx={{ padding: 3, backgroundColor: "var(--bg-1)", color: "var(--text-0)" }}>
+          <Typography variant="h6" sx={{ marginBottom: 2 }}>
+            {selectedId ? "Edit channel" : "Create a new channel"}
+          </Typography>
 
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={form.isPublic}
-                    onChange={handlePublicChange}
-                    disabled={!canEditSelected}
-                  />
-                }
-                label={form.isPublic ? "Public channel" : "Private channel"}
-                sx={{ mb: 2 }}
-              />
+          {status.message && (
+            <Alert severity={status.type} sx={{ mb: 2 }}>
+              {status.message}
+            </Alert>
+          )}
+          {!canManageSelected && selectedId && !isSelectedDm && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              You can view this channel, but only its creator or admins can edit it.
+            </Alert>
+          )}
+          {isSelectedDm && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              Direct messages can be deleted but not edited.
+            </Alert>
+          )}
 
-              <Autocomplete
-                multiple
-                options={users}
-                getOptionLabel={(option) => option.username || ""}
-                value={selectedUsers}
-                onChange={handleUsersChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Members"
-                    placeholder="Select users"
-                    disabled={!canEditSelected}
-                    helperText={
-                      form.isPublic
-                        ? "Optional for public channels."
-                        : "Private channels require members."
-                    }
-                  />
-                )}
-                sx={{ mb: 2 }}
-                isOptionEqualToValue={(option, value) => option._id === value._id}
-              />
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField
+              label="Channel name"
+              variant="outlined"
+              fullWidth
+              required
+              disabled={!canEditSelected}
+              value={form.name}
+              onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              label="Description"
+              variant="outlined"
+              fullWidth
+              disabled={!canEditSelected}
+              value={form.description}
+              onChange={(event) =>
+                setForm((prev) => ({ ...prev, description: event.target.value }))
+              }
+              sx={{ mb: 2 }}
+            />
 
-              <Autocomplete
-                multiple
-                options={users}
-                getOptionLabel={(option) => option.username || ""}
-                value={selectedAdmins}
-                onChange={handleAdminsChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Admins"
-                    placeholder="Select admins"
-                    disabled={!canEditSelected}
-                  />
-                )}
-                sx={{ mb: 3 }}
-                isOptionEqualToValue={(option, value) => option._id === value._id}
-              />
-
-              <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                <Button
-                  type="submit"
-                  variant="contained"
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={form.isPublic}
+                  onChange={handlePublicChange}
                   disabled={!canEditSelected}
+                />
+              }
+              label={form.isPublic ? "Public channel" : "Private channel"}
+              sx={{ mb: 2 }}
+            />
+
+            <Autocomplete
+              multiple
+              options={users}
+              getOptionLabel={(option) => option.username || ""}
+              value={selectedUsers}
+              onChange={handleUsersChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Members"
+                  placeholder="Select users"
+                  disabled={!canEditSelected}
+                  helperText={
+                    form.isPublic
+                      ? "Optional for public channels."
+                      : "Private channels require members."
+                  }
+                />
+              )}
+              sx={{ mb: 2 }}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
+            />
+
+            <Autocomplete
+              multiple
+              options={users}
+              getOptionLabel={(option) => option.username || ""}
+              value={selectedAdmins}
+              onChange={handleAdminsChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Admins"
+                  placeholder="Select admins"
+                  disabled={!canEditSelected}
+                />
+              )}
+              sx={{ mb: 3 }}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
+            />
+
+            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!canEditSelected}
+              >
+                {selectedId ? "Save changes" : "Create channel"}
+              </Button>
+              {selectedId && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDelete}
+                  disabled={!canDeleteSelected}
                 >
-                  {selectedId ? "Save changes" : "Create channel"}
+                  Delete channel
                 </Button>
-                {selectedId && (
+              )}
+            </Box>
+          </Box>
+
+          {selectedId && canManageSelected && !isSelectedDm && (
+            <Box sx={{ marginTop: 4 }}>
+              <Divider sx={{ my: 2, borderColor: "var(--border)" }} />
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                Moderation
+              </Typography>
+              <Stack spacing={2}>
+                <Autocomplete
+                  options={moderationMembers}
+                  getOptionLabel={(option) => option.username || ""}
+                  value={moderationTarget}
+                  onChange={(event, value) => setModerationTarget(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select user" placeholder="User to moderate" />
+                  )}
+                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                />
+                <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                   <Button
                     variant="outlined"
-                    color="error"
-                    onClick={handleDelete}
-                    disabled={!canDeleteSelected}
+                    color="warning"
+                    disabled={!moderationTarget}
+                    onClick={() => handleModeration("kick")}
                   >
-                    Delete channel
+                    Kick
                   </Button>
-                )}
-              </Box>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    disabled={!moderationTarget}
+                    onClick={() => handleModeration("ban")}
+                  >
+                    Ban
+                  </Button>
+                </Box>
+                <Autocomplete
+                  options={selectedBannedUsers}
+                  getOptionLabel={(option) => option.username || ""}
+                  value={unbanTarget}
+                  onChange={(event, value) => setUnbanTarget(value)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Banned users" placeholder="Select user" />
+                  )}
+                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                />
+                <Box>
+                  <Button
+                    variant="outlined"
+                    disabled={!unbanTarget}
+                    onClick={handleUnban}
+                  >
+                    Unban
+                  </Button>
+                </Box>
+              </Stack>
             </Box>
-
-            {selectedId && canManageSelected && !isSelectedDm && (
-              <Box sx={{ marginTop: 4 }}>
-                <Divider sx={{ my: 2, borderColor: "var(--border)" }} />
-                <Typography variant="h6" sx={{ mb: 2 }}>
-                  Moderation
-                </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <Autocomplete
-                      options={moderationMembers}
-                      getOptionLabel={(option) => option.username || ""}
-                      value={moderationTarget}
-                      onChange={(event, value) => setModerationTarget(value)}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Select user" placeholder="User to moderate" />
-                      )}
-                      isOptionEqualToValue={(option, value) => option._id === value._id}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} sx={{ display: "flex", gap: 2 }}>
-                    <Button
-                      variant="outlined"
-                      color="warning"
-                      disabled={!moderationTarget}
-                      onClick={() => handleModeration("kick")}
-                    >
-                      Kick
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      disabled={!moderationTarget}
-                      onClick={() => handleModeration("ban")}
-                    >
-                      Ban
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Autocomplete
-                      options={selectedBannedUsers}
-                      getOptionLabel={(option) => option.username || ""}
-                      value={unbanTarget}
-                      onChange={(event, value) => setUnbanTarget(value)}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Banned users" placeholder="Select user" />
-                      )}
-                      isOptionEqualToValue={(option, value) => option._id === value._id}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Button
-                      variant="outlined"
-                      disabled={!unbanTarget}
-                      onClick={handleUnban}
-                    >
-                      Unban
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            )}
-          </Paper>
-        </Grid>
-      </Grid>
+          )}
+        </Paper>
+      </Stack>
     </Box>
   );
 }

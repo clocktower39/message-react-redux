@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Box,
   Container,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
   IconButton,
   Input,
-  Grid,
+  Stack,
   TextField,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
@@ -61,50 +63,41 @@ export default function Account() {
 
   return (
     <Container maxWidth="md" sx={{ paddingTop: '100px' }}>
-      <Grid container spacing={3} sx={{ justifyContent: "center" }} >
-        <Grid container size={12} sx={{ justifyContent: "center" }} >
+      <Stack spacing={3}>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
           <IconButton onClick={handleOpenProfilePictureDialog}>
-            <Avatar sx={{ height: "5em", width: "5em", }} src={user.profilePicture ? `${serverURL}/user/image/${user.profilePicture}` : null} />
+            <Avatar sx={{ height: "5em", width: "5em" }} src={user.profilePicture ? `${serverURL}/user/image/${user.profilePicture}` : null} />
           </IconButton>
-
-        </Grid>
-        <Grid size={12}>
-          <TextField
-            label="Username"
-            variant="outlined"
-            value={username}
-            fullWidth
-            onChange={(e) => handleChange(e, setUsername)}
-          />
-        </Grid>
-        <Grid size={12}>
-          <TextField
-            label="First Name"
-            variant="outlined"
-            value={firstName}
-            fullWidth
-            onChange={(e) => handleChange(e, setFirstName)}
-          />
-        </Grid>
-        <Grid size={12}>
-          <TextField
-            label="Last Name"
-            variant="outlined"
-            value={lastName}
-            fullWidth
-            onChange={(e) => handleChange(e, setLastName)}
-          />
-        </Grid>
-        <Grid size={12}>
-          <TextField
-            label="Email"
-            variant="outlined"
-            value={email}
-            fullWidth
-            onChange={(e) => handleChange(e, setEmail)}
-          />
-        </Grid>
-        <Grid container size={12} sx={{ justifyContent: "center" }} >
+        </Box>
+        <TextField
+          label="Username"
+          variant="outlined"
+          value={username}
+          fullWidth
+          onChange={(e) => handleChange(e, setUsername)}
+        />
+        <TextField
+          label="First Name"
+          variant="outlined"
+          value={firstName}
+          fullWidth
+          onChange={(e) => handleChange(e, setFirstName)}
+        />
+        <TextField
+          label="Last Name"
+          variant="outlined"
+          value={lastName}
+          fullWidth
+          onChange={(e) => handleChange(e, setLastName)}
+        />
+        <TextField
+          label="Email"
+          variant="outlined"
+          value={email}
+          fullWidth
+          onChange={(e) => handleChange(e, setEmail)}
+        />
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
           <Button
             variant="outlined"
             onClick={handleCancel}
@@ -117,8 +110,8 @@ export default function Account() {
           >
             Save
           </Button>
-        </Grid>
-      </Grid>
+        </Stack>
+      </Stack>
 
       <Dialog open={profilePictureDialog} onClose={handleOpenProfilePictureDialog} >
         <DialogTitle>Update Profile Picture</DialogTitle>
